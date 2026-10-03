@@ -1,0 +1,44 @@
+Optional mask-aware FlashAttention-3 extension
+
+This extension combines project Python/C++/CUDA integration with separately
+licensed FlashAttention Hopper and NVIDIA CUTLASS/CuTe source. The repository's
+Apache-2.0 grant for project integration does not replace the BSD-3-Clause
+licenses and original copyright notices on those dependencies.
+
+FlashAttention Hopper
+--------------------
+Upstream: https://github.com/Dao-AILab/flash-attention
+Comparison reference: v2.8.3, commit
+060c9188beec3a8b62b33a3bfa6d5d2d44975fab.
+Reference source: https://github.com/Dao-AILab/flash-attention/tree/060c9188beec3a8b62b33a3bfa6d5d2d44975fab/hopper
+
+The 33 bundled Hopper headers are a modified source subset. All have matching
+paths in that comparison reference: 18 are byte-identical and 15 differ.
+This comparison identifies an upstream reference; it does not establish that
+the supplied snapshot was copied from exactly that tag or commit.
+Project changes include packed boolean-mask parameters, mask application and
+tile/row metadata, launch and scheduling adaptations, and SM90 specialization.
+Existing author notices remain on the bundled files, including Tri Dao and
+Jay Shah, Ganesh Bikshandi, Ying Zhang, Vijay Thakkar and Pradeep Ramani.
+
+The bundled LICENSE is byte-identical to the upstream BSD-3-Clause LICENSE
+at the comparison reference. Its referenced AUTHORS file is supplied from
+that same reference in vendor/flash_attn_hopper/AUTHORS. See
+vendor/flash_attn_hopper/LICENSE for the governing terms. Preserve those
+terms and attribution when distributing source or a compiled extension.
+
+NVIDIA CUTLASS / C++ CuTe
+------------------------
+Upstream: https://github.com/NVIDIA/cutlass
+Pinned source: commit 7127592069c2fe01b041e174ba4345ef9b279671.
+https://github.com/NVIDIA/cutlass/tree/7127592069c2fe01b041e174ba4345ef9b279671/include
+
+The 805 bundled include headers and LICENSE.txt are byte-identical to that
+upstream commit. Copyright (c) 2017 - 2025 NVIDIA CORPORATION & AFFILIATES.
+They retain their original notices and BSD-3-Clause terms in
+vendor/flash_attn_cutlass/LICENSE.txt. The separate python/CuTeDSL subtree
+mentioned in the upstream license is not included in this source subset.
+
+The project snapshot identifiers and compilation fingerprint in
+attention_fa3.py describe the supplied project variant. They are not upstream
+FlashAttention version identifiers or proof of publication rights.

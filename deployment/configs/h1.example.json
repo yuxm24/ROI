@@ -1,0 +1,15 @@
+{
+  "commissioned": false,
+  "server_url": "http://127.0.0.1:55558",
+  "timeout_s": 60,
+  "prompt": "REPLACE_WITH_EXACT_TEXT_BANK_INSTRUCTION",
+  "sdk_root": "external/zerith_public_sdk/H1_SDK_1.3.9/h1_sdk_v1.3.9_python3.10",
+  "camera_sdk_root": "external/zerith_public_sdk/H1_SDK_1.3.9/camera_sdk_python",
+  "planner_source": "external/teleop/teleop/scripts",
+  "planner_factory": "vla_source:build_planner",
+  "controller_lock": "/run/lock/zwam-h1-controller.lock",
+  "camera_address": "localhost:50051",
+  "zcm_region": "/dev/shm/zcm/ipcshm/default",
+  "frame": "body_yaw_link",
+  "eef_links": ["left_end_effector_link", "right_end_effector_link"]
+}

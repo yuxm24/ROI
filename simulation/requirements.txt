@@ -1,0 +1,24 @@
+# Install PyTorch and Megatron-Core first; see README.
+mmengine==0.10.7
+numpy==1.26.4
+safetensors==0.7.0
+transformers==4.53.2
+tokenizers==0.21.4
+huggingface-hub==0.36.2
+sentencepiece==0.2.0
+ftfy==6.3.1
+einops==0.4.1
+opencv-python==4.11.0.86
+Pillow>=12.3,<13
+pyarrow>=19
+av>=14
+h5py>=3.12
+protobuf>=5,<7
+Flask>=3
+requests>=2.32
+rich>=13
+tqdm>=4.67
+wandb==0.21.0
+psutil>=7
+packaging>=24
+pytest>=8

@@ -1,0 +1,13 @@
+{
+  "wan_source": "external/Wan2.2",
+  "wan_source_sha256": "REPLACE_WITH_VERIFIED_SHA256",
+  "wan_weights": "assets/wan",
+  "vae_sha256": "REPLACE_WITH_VERIFIED_SHA256",
+  "vggt_source": "external/vggt",
+  "vggt_source_sha256": "REPLACE_WITH_VERIFIED_SHA256",
+  "vggt_weights": "assets/vggt",
+  "vggt_files": {
+    "config.json": "REPLACE_WITH_VERIFIED_SHA256",
+    "model.safetensors": "REPLACE_WITH_VERIFIED_SHA256"
+  }
+}

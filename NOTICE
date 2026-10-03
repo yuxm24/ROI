@@ -1,0 +1,15 @@
+Zerith-VA source release candidate
+Zerith Robotics integration and documentation: Copyright 2026 Zerith Robotics.
+
+This repository combines separately licensed source. See LICENSE_POLICY.md,
+simulation/NOTICE and deployment/NOTICE for original Apache-2.0 and
+third-party attribution. Those original notices and grants remain in force.
+
+Model weights, training data, robot SDK binaries, URDF assets, Wan and VGGT
+weights are not distributed in this source release. Model-weight licensing is
+described separately in MODEL_LICENSE_POLICY.md.
+
+The Zerith Robotics logo is displayed with authorization for project
+identification. Zerith Robotics retains its rights in the logo. The artwork
+is excluded from the Apache-2.0 source-code license; this repository grants
+no additional trademark or branding rights.

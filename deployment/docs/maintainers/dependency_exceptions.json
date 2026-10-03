@@ -1,0 +1,18 @@
+[
+  {
+    "id": "GHSA-rrmf-rvhw-rf47",
+    "package": "torch",
+    "version": "2.10.0",
+    "expires": "2026-11-01",
+    "reason": "The H1 inference path does not accept or compile user Python through torch.jit.script. Only reviewed local dependencies are supported; a framework upgrade needs model and visual-encoder parity tests.",
+    "url": "https://github.com/advisories/GHSA-rrmf-rvhw-rf47"
+  },
+  {
+    "id": "CVE-2026-4538",
+    "package": "torch",
+    "version": "2.10.0",
+    "expires": "2026-11-01",
+    "reason": "The service never loads PT2 archives or accepts serialized executable models. The policy uses safetensors and only a provider-verified VAE file is passed to the reviewed upstream loader.",
+    "url": "https://github.com/pypa/advisory-database/blob/main/vulns/torch/PYSEC-2026-139.yaml"
+  }
+]

@@ -1,0 +1,9 @@
+target-version = "py310"
+line-length = 100
+
+[lint]
+select = ["E", "F", "I", "B"]
+ignore = ["E501"]
+
+[lint.per-file-ignores]
+"deployment/tests/test_model.py" = ["E402"]

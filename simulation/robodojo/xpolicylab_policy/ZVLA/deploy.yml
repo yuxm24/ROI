@@ -1,0 +1,22 @@
+policy_name: ZVLA
+protocol: ws
+host: localhost
+port: null
+bench_name: RoboDojo
+task_name: null
+ckpt_name: null
+env_cfg_type: arx_x5
+seed: 0
+action_type: ee
+eval_batch: false
+# The synchronous simulator does not service its WebSocket event loop while
+# building a scene or stepping physics. Keep request timeouts, but do not
+# disconnect a healthy episode because no heartbeat was handled in 20 s.
+ws_ping_interval_s: null
+ws_ping_timeout_s: null
+
+# The shell launcher overrides these from ZVLA_SERVER_URL and
+# ZVLA_REQUEST_TIMEOUT. They are safe local-development defaults.
+server_url: http://127.0.0.1:18000
+request_timeout: 300
+expected_inference_attention_backend: ""

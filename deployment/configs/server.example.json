@@ -1,0 +1,8 @@
+{
+  "bind": "127.0.0.1",
+  "port": 55558,
+  "device": "cuda:0",
+  "artifact": "assets/policy",
+  "visual_assets": "configs/visual_assets.local.json",
+  "text_assets": "assets/text"
+}

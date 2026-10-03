@@ -1,0 +1,27 @@
+ZWAM-Deploy
+
+Inference source and integration:
+Copyright 2026 Zerith Robotics and ZWAM Contributors.
+Licensed under Apache License, Version 2.0.
+
+src/zwam_core is an inference-only adaptation of the supplied ZWAM/ZVLA
+model implementation. The supplied project's license declaration identifies
+Copyright 2026 Limx Dynamics and Apache License, Version 2.0. We preserve
+that attribution and Apache-2.0 terms for the extracted model implementation.
+This notice does not claim that the implementation was authored entirely
+by the deployment repository's contributors.
+
+Changes: inference-only symbol extraction; training recipes, losses and
+entrypoints removed; Python package paths adapted; portable PyTorch SDPA
+selected instead of optional private CUDA extensions. Checkpoint parameter
+names and inference coordinate mathematics are retained.
+See docs/model_source_manifest.json for source-module fingerprints and
+../../LICENSE_POLICY.md for attribution and external dependency boundaries.
+
+The H1 native IK wrapper is adapted from the deployment client. The external
+native solver, SDK binaries and robot description assets are installed
+separately under their respective license terms. Model weights and training
+data are not distributed in this source package.
+
+The Apache-2.0 license at the root does not replace third-party licenses.
+VGGT and its model assets have their own license and are not distributed here.

@@ -1,0 +1,132 @@
+{
+  "format": "source-provenance-v1",
+  "files": [
+    {
+      "file": "inference/src/zwam_core/models/fam_wam/runtime.py",
+      "source_module": "zvla/models/fam_wam/runtime.py",
+      "source_sha256": "b83d8256975c16ed8d333afc78fef13b07a65a1ab3520d73afc30b8e6fc23e6d",
+      "changes": "Inference-only adaptation; package imports updated; training and diagnostic paths excluded; checkpoint parameter names retained.",
+      "license": "Apache-2.0",
+      "distributed_sha256": "6897a2ed6d7f279d0db459dc40a06f0a3b9b72b06bdd0e01f3d1c40d0b5c4b2a"
+    },
+    {
+      "file": "inference/src/zwam_core/models/fam_wam/config.py",
+      "source_module": "zvla/models/fam_wam/config.py",
+      "source_sha256": "a1f0030991bb6fc1ea621db2e1786d56759975c8c55b377b87573caf0f3b2618",
+      "changes": "Inference-only adaptation; package imports updated; training and diagnostic paths excluded; checkpoint parameter names retained.",
+      "license": "Apache-2.0",
+      "distributed_sha256": "3b1bdcf754a073c59ec2997d7825bd179cb99b7372c121772378031c0fe0a385"
+    },
+    {
+      "file": "inference/src/zwam_core/models/fam_wam/kv.py",
+      "source_module": "zvla/models/fam_wam/kv.py",
+      "source_sha256": "6b940e709b17fe29f8f2553c3daa71fbd0e53865221f4e7d7d75dbf4b794ece7",
+      "changes": "Inference-only adaptation; package imports updated; training and diagnostic paths excluded; checkpoint parameter names retained.",
+      "license": "Apache-2.0",
+      "distributed_sha256": "3c67cc71fd79bd2061581aafc92ffd923bc2a19bc9b48b2c879bff7f2d138676"
+    },
+    {
+      "file": "inference/src/zwam_core/models/fam_wam/geometry.py",
+      "source_module": "zvla/models/fam_wam/geometry.py",
+      "source_sha256": "76163311575e098d59b7c19fd017c683704119a650ef3853278db208f3ce6f97",
+      "changes": "Inference-only adaptation; package imports updated; training and diagnostic paths excluded; checkpoint parameter names retained.",
+      "license": "Apache-2.0",
+      "distributed_sha256": "1b570fcecce988efb4bf460d203cd6bd1a0ea9d47360f4c37551ff166c1a7baf"
+    },
+    {
+      "file": "inference/src/zwam_core/models/fam_wam/policy_reader.py",
+      "source_module": "zvla/models/fam_wam/policy_reader.py",
+      "source_sha256": "18caf24eadfe82912b72db4b4dc0404bc67ba4f5dd58a9b3c5a115289b4b7797",
+      "changes": "Inference-only adaptation; package imports updated; training and diagnostic paths excluded; checkpoint parameter names retained.",
+      "license": "Apache-2.0",
+      "distributed_sha256": "3129023589bb03fc95bf38ff60ee9571844f427a62c097120c1947d420d8b8fb"
+    },
+    {
+      "file": "inference/src/zwam_core/models/fam_wam/primitives.py",
+      "source_module": "zvla/models/fam_wam/primitives.py",
+      "source_sha256": "73fb50b1a5092f7726b160924db193d3416ca919e116839f3f05b555ba7ef1df",
+      "changes": "Inference-only adaptation; package imports updated; training and diagnostic paths excluded; checkpoint parameter names retained.",
+      "license": "Apache-2.0",
+      "distributed_sha256": "4788f276a504622ff9a380c246821f0049b031d350034c3820f917951412a14a"
+    },
+    {
+      "file": "inference/src/zwam_core/models/fam_wam/teacher.py",
+      "source_module": "zvla/models/fam_wam/teacher.py",
+      "source_sha256": "57ed31cc95ceda12a2c52f8905db698d69ba0c4b5b2412d964f737aa089f4e5c",
+      "changes": "Inference-only adaptation; package imports updated; training and diagnostic paths excluded; checkpoint parameter names retained.",
+      "license": "Apache-2.0",
+      "distributed_sha256": "da8d453336fb4ffb109f78ff7556d96c8d0fa074039b99403449f0d10d2547dc"
+    },
+    {
+      "file": "inference/src/zwam_core/actions/state_trajectory.py",
+      "source_module": "zvla/actions/state_trajectory.py",
+      "source_sha256": "bc955922512b7befbb9fff2abb826c39a931192d471109829e65d90511b859ef",
+      "changes": "Inference-only adaptation; package imports updated; training and diagnostic paths excluded; checkpoint parameter names retained.",
+      "license": "Apache-2.0",
+      "distributed_sha256": "9ce7f81db2a524aa582f0a9461d103cdc214d166e515e3a01fadd2690ceaa8de"
+    },
+    {
+      "file": "inference/src/zwam_core/actions/mixed_native7.py",
+      "source_module": "zvla/actions/mixed_native7.py",
+      "source_sha256": "bf98026f4dff53aef43d2019e47cac6ec7f34cb8afb57f4dd112544a38c3802f",
+      "changes": "Inference-only adaptation; package imports updated; training and diagnostic paths excluded; checkpoint parameter names retained.",
+      "license": "Apache-2.0",
+      "distributed_sha256": "8078ec6811c8771dbcbb0985f4858bc2123871d1515d4f01a7864b3da721a5ad"
+    },
+    {
+      "file": "inference/src/zwam_core/actions/h1.py",
+      "source_module": "zvla/actions/h1.py",
+      "source_sha256": "2126774fcf0591651b48528ebd58be6ef924eb762311b44091920ebb50b86477",
+      "changes": "Inference-only adaptation; package imports updated; training and diagnostic paths excluded; checkpoint parameter names retained. Validate declared hand-pose frame and position/waist units and joint order against the shared H1 deployment contract; unresolved source declarations are rejected without relabeling statistics.",
+      "license": "Apache-2.0",
+      "distributed_sha256": "d7db0903f348d7e0670fa67d10aa848e500704a04a6608fccf2fb216a3797cb5"
+    },
+    {
+      "file": "inference/src/zwam_core/vision/schema.py",
+      "source_module": "zvla/vision/schema.py",
+      "source_sha256": "2d45f469a913dac0592164df08d1ecdf24579371ed030ede4facef529f5d0331",
+      "changes": "Inference-only adaptation; package imports updated; training and diagnostic paths excluded; checkpoint parameter names retained.",
+      "license": "Apache-2.0",
+      "distributed_sha256": "fe7ce9139984564feca384b471517fbbfe6256144d92a5b3b82aa1ed9fb8b654"
+    },
+    {
+      "file": "inference/src/zwam_core/vision/letterbox.py",
+      "source_module": "zvla/vision/letterbox.py",
+      "source_sha256": "0c69ba662107f5cf89cc900f7bb9008371acd0593f33dc23fc4178f755dda0ce",
+      "changes": "Inference-only adaptation; package imports updated; training and diagnostic paths excluded; checkpoint parameter names retained.",
+      "license": "Apache-2.0",
+      "distributed_sha256": "26ca8ff86d81d091a7162a99e8e7d2d195bfda314dc50f9fc2cc968c1a43774b"
+    },
+    {
+      "file": "inference/src/zwam_core/vision/wan_imports.py",
+      "source_module": "zvla/vision/wan_imports.py",
+      "source_sha256": "19be163bab03c4bc62cc10c5649286c0de634e3d23cc525dbe593f556b5fe5f4",
+      "changes": "Inference-only adaptation; package imports updated; training and diagnostic paths excluded; checkpoint parameter names retained.",
+      "license": "Apache-2.0",
+      "distributed_sha256": "bcd5adc56af1d6ef17c4ffdd554027e7a53063ab781bbdb1f03520e506b035da"
+    },
+    {
+      "file": "inference/src/zwam_core/vision/wan_vae.py",
+      "source_module": "zvla/vision/wan_vae.py",
+      "source_sha256": "8133c0861697670457c5a690ea6dc9a61e189f1dc72c5d314af7a8f23afe323c",
+      "changes": "Inference-only adaptation; package imports updated; training and diagnostic paths excluded; checkpoint parameter names retained.",
+      "license": "Apache-2.0",
+      "distributed_sha256": "56203ce17df1b080828e137dbd36333b0ea8bfa1793e2102b522f6692c1db1d7"
+    },
+    {
+      "file": "inference/src/zwam_core/vision/streaming.py",
+      "source_module": "libero/zvla_server.py",
+      "source_sha256": "b9df8165255ab2b73d2c68cf6e6cf6a76aada0fc970e01a3da837fd208cb2a05",
+      "changes": "Inference-only adaptation; package imports updated; training and diagnostic paths excluded; checkpoint parameter names retained.",
+      "license": "Apache-2.0",
+      "distributed_sha256": "b2535891a15992516d658ffd1d8bf4787c80554e9e27041b72d264969c7d6d72"
+    },
+    {
+      "file": "robot/src/zwam/h1/native_ik.py",
+      "source_module": "H1 deployment client supplied by project maintainers",
+      "license": "Apache-2.0",
+      "distributed_sha256": "62d0d6d1b40ee8e28d814502011c7a41ab3ba6e07583fd8a5c758bd6e2142294",
+      "changes": "Python adapter for the external native IK provider. Native solver source and binaries are not distributed."
+    }
+  ]
+}

@@ -1,0 +1,50 @@
+name: source-and-packages
+on: [push, pull_request]
+permissions:
+  contents: read
+
+jobs:
+  cpu:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
+        with:
+          python-version: '3.12'
+      - name: Install deployment dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install torch==2.10.0 torchvision==0.25.0 --index-url https://download.pytorch.org/whl/cpu
+          python -m pip install -e ./deployment/shared -e ./deployment/inference -e ./deployment/robot pytest ruff build
+      - run: python -m pip check
+      - run: ruff check deployment/shared/src deployment/inference/src deployment/robot/src deployment/tests deployment/scripts scripts
+      - run: ruff format --check deployment/shared/src deployment/inference/src deployment/robot/src deployment/tests deployment/scripts scripts
+      - run: pytest -q deployment/tests
+        env:
+          NO_PROXY: 127.0.0.1,localhost
+          no_proxy: 127.0.0.1,localhost
+      - run: python scripts/check_release.py
+      - name: Build separate deployment wheels
+        run: |
+          python -m build --wheel deployment/shared --outdir deployment/dist
+          python -m build --wheel deployment/inference --outdir deployment/dist
+          python -m build --wheel deployment/robot --outdir deployment/dist
+          python scripts/check_dist.py deployment/dist
+
+  simulation:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
+        with:
+          python-version: '3.12'
+      - name: Install simulation test dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install torch==2.10.0 torchvision==0.25.0 --index-url https://download.pytorch.org/whl/cpu
+          python -m pip install -r simulation/requirements.txt build
+          python -m pip install -e ./simulation
+      - run: python -m pip check
+      - run: pytest -q simulation/tests
+      - run: python -m compileall -q simulation/zvla simulation/scripts
+      - run: python -m build --wheel simulation --outdir simulation/dist

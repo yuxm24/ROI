@@ -1,0 +1,9 @@
+ZWAM H1 robot controller
+
+Copyright 2026 Zerith Robotics and ZWAM Contributors.
+Licensed under Apache License, Version 2.0.
+
+The H1 SDK, native IK solver and robot description assets are external and
+installed separately under their providers' terms.
+Only the project's SDK adapter is included. Vendor SDK source, binaries and
+examples are not bundled, downloaded or installed by this Python package.

@@ -1,0 +1,8 @@
+# Generic HTTP client and launcher; simulator environments are installed separately.
+name: zvla-client
+channels:
+  - conda-forge
+dependencies:
+  - python=3.11
+  - numpy>=1.26
+  - requests>=2.32

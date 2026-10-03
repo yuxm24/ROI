@@ -1,0 +1,39 @@
+Z-VLA simulation post-training source
+
+This tree is copied from the supplied Z-VLA project without its Git history,
+weights, data or runtime outputs. Existing Limx Dynamics Apache-2.0 notices
+remain in their source files. The simulation engine includes code shared with
+FluxVLA Engine (https://github.com/FluxVLA/FluxVLA), including its registry
+and builder utilities. Preserve the Limx Dynamics attribution on those files.
+The project maintainer has selected Apache-2.0 for project simulation source
+without a separate license notice, including training, data preparation and
+benchmark integration code. This decision does not relicense official simulator
+source or remove existing third-party licenses and attribution. See
+../LICENSE_POLICY.md for the scope.
+
+The training logger and metric modules are independently implemented for this
+release under Apache-2.0. `zvla/engines/utils/registry.py` identifies
+OpenMMLab as its source under Apache-2.0.
+
+LIBERO/Plus, MetaWorld, RoboTwin and RoboDojo environments are external
+dependencies installed separately under their upstream terms. Any source copied
+or adapted from those projects must retain its upstream notices and terms.
+
+metaworld_benchmark/prompts.py adapts the official MetaWorld task descriptions:
+https://metaworld.farama.org/benchmark/task_descriptions/
+Copyright (c) 2019 Meta-World Team. MIT License; the full notice and terms are
+included in LICENSES/MetaWorld-MIT.txt. This table retains MIT licensing.
+
+robodojo/xpolicylab_policy/ZVLA/setup_eval_env_client.sh and
+setup_eval_policy_server.sh adapt the XPolicyLab demo_policy and DP launch
+templates at revision 72b3a52f2b069220088ef824ade5890885858379:
+https://github.com/XPolicyLab/XPolicyLab
+The upstream templates are Apache-2.0; that license text is included in
+LICENSES/Apache-2.0.txt.
+
+The optional fa2_custom_mask extension is retained. Its project bindings,
+launchers and mask integration use Apache-2.0; the modified FlashAttention
+Hopper headers and CUTLASS/C++ CuTe headers retain BSD-3-Clause licensing and
+their original copyright notices. The source, AUTHORS, license texts and
+fa2_custom_mask/NOTICE are included in the wheel and source distribution.
+See fa2_custom_mask/NOTICE for the pinned upstream sources and modifications.
