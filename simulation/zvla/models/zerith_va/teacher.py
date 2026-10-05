@@ -9,7 +9,7 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
-from .config import FaMWAMConfig
+from .config import ZerithVAConfig
 from .kv import DenseKV, LayerKV
 from .primitives import (
     SinusoidalConditioner,
@@ -44,7 +44,7 @@ class EvolvingWanWorld(nn.Module):
     """
 
     _fsdp_wrap_root = True
-    def __init__(self, config: FaMWAMConfig) -> None:
+    def __init__(self, config: ZerithVAConfig) -> None:
         super().__init__()
         self.config = config
         patch_area = config.patch_size * config.patch_size
@@ -586,7 +586,7 @@ class JointPrefillWanCarrier(nn.Module):
 
     carrier_kind = "joint_max_noise_future_prefill"
 
-    def __init__(self, config: FaMWAMConfig) -> None:
+    def __init__(self, config: ZerithVAConfig) -> None:
         super().__init__()
         self.config = config
         self.wan = LiveWanWorld(config)

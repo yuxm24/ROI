@@ -2,13 +2,17 @@ import pytest
 
 torch = pytest.importorskip("torch")
 from zwam_core.actions.state_trajectory import matrix_to_rotation_6d, rotation_6d_to_matrix
-from zwam_core.models.fam_wam.config import FAM_WAM_V52_TEACHER_ARCHITECTURE_VERSION, FaMWAMConfig
-from zwam_core.models.fam_wam.runtime import FaMWAMV5TeacherPolicy
+from zwam_core.models.zerith_va.config import (
+    LEGACY_TEACHER_ARCHITECTURE_VERSION,
+    ZERITH_VA_TEACHER_ARCHITECTURE_VERSION,
+    ZerithVAConfig,
+)
+from zwam_core.models.zerith_va.runtime import ZerithVATeacherPolicy
 
 
 def tiny_config():
-    return FaMWAMConfig.tiny(
-        architecture_version=FAM_WAM_V52_TEACHER_ARCHITECTURE_VERSION,
+    return ZerithVAConfig.tiny(
+        architecture_version=ZERITH_VA_TEACHER_ARCHITECTURE_VERSION,
         action_dim=23,
         state_dim=23,
         state_trajectory_dim=23,
@@ -22,11 +26,17 @@ def tiny_config():
     )
 
 
-def test_no_training_recipe_in_config():
+@pytest.mark.parametrize(
+    "architecture_version",
+    [ZERITH_VA_TEACHER_ARCHITECTURE_VERSION, LEGACY_TEACHER_ARCHITECTURE_VERSION],
+    ids=["canonical", "legacy-metadata"],
+)
+def test_no_training_recipe_in_config(architecture_version):
     config = tiny_config()
     assert "training_source_names" not in config.as_dict()
     assert "world_ema_decay" not in config.as_dict()
-    assert FaMWAMConfig.from_dict(config.as_dict()) == config
+    metadata = dict(config.as_dict(), architecture_version=architecture_version)
+    assert ZerithVAConfig.from_dict(metadata) == config
 
 
 def test_tensor_rotation_contract():
@@ -38,7 +48,7 @@ def test_tiny_full_policy_forward_and_reset():
     torch.set_num_threads(1)
     torch.manual_seed(7)
     config = tiny_config()
-    policy = FaMWAMV5TeacherPolicy(config).eval()
+    policy = ZerithVATeacherPolicy(config).eval()
     state = torch.zeros(1, 23)
     state[:, [3, 7, 13, 17]] = 1
     args = [
@@ -66,8 +76,8 @@ def test_tiny_full_policy_forward_and_reset():
 
 def test_state_dict_strict_roundtrip():
     config = tiny_config()
-    policy = FaMWAMV5TeacherPolicy(config)
-    clone = FaMWAMV5TeacherPolicy(config)
+    policy = ZerithVATeacherPolicy(config)
+    clone = ZerithVATeacherPolicy(config)
     clone.load_state_dict(policy.state_dict(), strict=True)
     assert policy.state_dict().keys() == clone.state_dict().keys()
 
@@ -75,9 +85,9 @@ def test_state_dict_strict_roundtrip():
 def test_meta_network_cpu_codec_materialization():
     config = tiny_config()
     with torch.device("meta"):
-        policy = FaMWAMV5TeacherPolicy(config)
+        policy = ZerithVATeacherPolicy(config)
     assert next(policy.parameters()).is_meta
     assert not policy.state_codec.waist_stat_valid.is_meta
-    original = FaMWAMV5TeacherPolicy(config)
+    original = ZerithVATeacherPolicy(config)
     policy.load_state_dict(original.state_dict(), strict=True, assign=True)
     assert all(not value.is_meta for value in policy.state_dict().values())

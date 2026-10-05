@@ -192,7 +192,7 @@ def test_missing_bundled_plugin_is_reported_before_any_copy(
     package = tmp_path / "incomplete-install"
     monkeypatch.setattr(entrypoint, "__file__", str(package / "zvla/posttrain/evaluate.py"))
     monkeypatch.setattr(entrypoint.shutil, "copy2", lambda *_args: pytest.fail("copied"))
-    with pytest.raises(FileNotFoundError, match="Installed Z-VLA"):
+    with pytest.raises(FileNotFoundError, match="Installed Zerith VA"):
         entrypoint.evaluate(args)
     assert not Path(args.output).exists()
     assert not (root / "policy").exists() and not (root / "XPolicyLab/policy").exists()

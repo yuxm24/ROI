@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "zwam-inference"
 version = "0.1.0"
-description = "ZWAM H1 model and GPU inference service"
+description = "Zerith VA H1 model and GPU inference service"
 requires-python = ">=3.10"
 license = "Apache-2.0"
 license-files = ["LICENSE", "NOTICE", "LICENSES/Apache-2.0.txt"]

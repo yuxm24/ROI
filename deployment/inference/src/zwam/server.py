@@ -1,4 +1,4 @@
-"""Serve ZWAM policy inference over HTTP."""
+"""Serve Zerith VA policy inference over HTTP."""
 
 import argparse
 import json
@@ -147,7 +147,7 @@ def main(argv=None, *, prog=None):
         session, tasks = load_session(config)
         server.gate = SessionGate(session, tasks)
         server.metadata = dict(metadata(), tasks=tasks)
-        logging.info("ZWAM inference ready on %s:%d; tasks=%d", host, port, len(tasks))
+        logging.info("Zerith VA inference ready on %s:%d; tasks=%d", host, port, len(tasks))
         while not stop[0]:
             server.handle_request()
     finally:

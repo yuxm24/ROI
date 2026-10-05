@@ -149,7 +149,7 @@ def build_optimizer_and_scheduler(
         )
     optimizer_cfg = cfg.get('optimizer', {}) or {}
     if optimizer_cfg.get('type', 'adamw').lower() != 'adamw':
-        raise ValueError('FaM-WAM unified trainer supports AdamW only')
+        raise ValueError('Zerith VA unified trainer supports AdamW only')
     betas = tuple(float(value) for value in optimizer_cfg.get('betas', (0.9, 0.999)))
     if len(betas) != 2 or not all(0.0 <= value < 1.0 for value in betas):
         raise ValueError('AdamW betas must contain two values in [0,1)')

@@ -247,7 +247,7 @@ def run_checks(role, config_path, *, verify_assets=False):
             path = root.joinpath(*parts[0].split("."))
             if not path.with_suffix(".py").is_file() and not (path / "__init__.py").is_file():
                 raise ValueError(
-                    "Planner factory module missing; see the Zerith-VA README, H1 setup"
+                    "Planner factory module missing; see the Zerith VA README, H1 setup"
                 )
             existing_path(root / "processors/fast_ik_backend.py")
 

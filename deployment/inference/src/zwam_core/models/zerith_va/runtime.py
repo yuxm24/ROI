@@ -13,8 +13,8 @@ import torch.nn as nn
 from zwam_core.actions.mixed_native7 import codec_class
 
 from .config import (
-    FAM_WAM_V52_TEACHER_ARCHITECTURE_VERSION,
-    FaMWAMConfig,
+    ZERITH_VA_TEACHER_ARCHITECTURE_VERSION,
+    ZerithVAConfig,
 )
 from .geometry import GeometryAnchored4DBinder, GeometryTokenBridge
 from .policy_reader import PolicyReader, integrate_action_flow
@@ -23,7 +23,7 @@ from .teacher import JointPrefillWanCarrier
 
 
 @dataclass
-class FaMInferenceState:
+class ZerithVAInferenceState:
     seed: int = 0
     batch_size: Optional[int] = None
     counters: Dict[str, int] = field(
@@ -31,14 +31,14 @@ class FaMInferenceState:
     )
 
 
-class FaMWAMPolicy(nn.Module):
+class ZerithVAPolicy(nn.Module):
     """One world prefill followed by cached iterative action flow."""
 
     def deployment_modules(self) -> Mapping[str, nn.Module]:
         return {"world": self.world, "policy_reader": self.policy_reader}
 
     def reset_inference(self, seed: int = 0) -> None:
-        self._runtime = FaMInferenceState(seed=int(seed))
+        self._runtime = ZerithVAInferenceState(seed=int(seed))
         self._generator = None
 
     def _ensure_generator(self, device: torch.device) -> torch.Generator:
@@ -173,17 +173,17 @@ class FaMWAMPolicy(nn.Module):
         return action
 
 
-class FaMWAMV5TeacherPolicy(FaMWAMPolicy):
+class ZerithVATeacherPolicy(ZerithVAPolicy):
     """H1 command23 policy with Wan dynamics and VGGT geometry."""
 
-    def __init__(self, config: FaMWAMConfig) -> None:
+    def __init__(self, config: ZerithVAConfig) -> None:
         super().__init__()
-        if config.architecture_version != FAM_WAM_V52_TEACHER_ARCHITECTURE_VERSION:
+        if config.architecture_version != ZERITH_VA_TEACHER_ARCHITECTURE_VERSION:
             raise ValueError("Unsupported inference architecture")
         self.config = config
         self.world = JointPrefillWanCarrier(config, allow_uninitialized=True)
         self.policy_reader = PolicyReader(config)
-        self._runtime = FaMInferenceState()
+        self._runtime = ZerithVAInferenceState()
         self._generator = None
         self.geometry_bridge = GeometryTokenBridge(config)
         self.g4d_binder = GeometryAnchored4DBinder(config)

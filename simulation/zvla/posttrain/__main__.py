@@ -16,7 +16,7 @@ def assets(parser):
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Z-VLA benchmark post-training")
+    parser = argparse.ArgumentParser(description="Zerith VA benchmark post-training")
     commands = parser.add_subparsers(dest="command", required=True)
     p = commands.add_parser("prepare", help="encode public benchmark demonstrations")
     p.add_argument("--bench", choices=BENCHMARKS, required=True)

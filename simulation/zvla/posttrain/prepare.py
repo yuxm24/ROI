@@ -73,7 +73,7 @@ def codec_statistics(bench, rows):
         native7_layout=list(NATIVE7_LAYOUT), coordinate_convention=ACTION20_COORDINATE_CONVENTION,
         embodiments=[spec['robot']])
     if bench == 'metaworld':
-        from metaworld_benchmark.v52_contract import (
+        from metaworld_benchmark.contract import (
             ACTION_LAYOUT,
             PROTOCOL,
             STATE_SLOTS,

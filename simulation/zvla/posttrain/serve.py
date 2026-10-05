@@ -11,7 +11,7 @@ from .sources import libero_state
 
 def serve(args):
     from flask import Flask, request, jsonify
-    from zvla.models.fam_wam import load_deployment_artifact
+    from zvla.models.zerith_va import load_deployment_artifact
     from zvla.vision import CameraProfile, load_wan22_vae
     from zvla.vision.wan_assets import _load_text_encoder
     from .visual import StreamingWanVAEEncoder, StreamingVGGTGeometryEncoder
@@ -54,7 +54,7 @@ def serve(args):
         if bench in ('libero','libero-plus'):
             state = libero_state(state[None])[0]; valid = np.arange(20)<10
         elif bench == 'metaworld':
-            from metaworld_benchmark.v52_contract import state20, stored_image
+            from metaworld_benchmark.contract import state20, stored_image
             state = state20(state[:4]); valid = np.isin(np.arange(20), [0,1,2,9])
             rgb = np.stack([stored_image(frame[0]) for frame in rgb])[:,None]
         elif bench == 'robodojo':

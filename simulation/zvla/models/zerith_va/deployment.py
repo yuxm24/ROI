@@ -10,11 +10,13 @@ from typing import Any, Mapping, Optional, Tuple
 import torch
 from safetensors.torch import load_file, save_file
 
-from .config import FaMWAMConfig
-from .model import FaMWAMPolicy
+from .config import ZerithVAConfig
+from .model import ZerithVAPolicy
 from .primitives import FP32Linear
 
-ARTIFACT_FORMAT = "fam-wam-policy-v5.2-action20-linear-g4d-teacher"
+ARTIFACT_FORMAT = "zerith-va-policy-action20-linear-g4d-teacher"
+# Accept previously exported artifacts; all new exports use the Zerith VA name.
+LEGACY_ARTIFACT_FORMAT = "fam-wam-policy-v5.2-action20-linear-g4d-teacher"
 WEIGHT_FILE = "model.safetensors"
 MANIFEST_FILE = "manifest.json"
 
@@ -33,7 +35,7 @@ def _json(value: Any) -> Any:
     return json.loads(json.dumps(value, sort_keys=True))
 
 
-def _move_policy(policy: FaMWAMPolicy, device, dtype) -> FaMWAMPolicy:
+def _move_policy(policy: ZerithVAPolicy, device, dtype) -> ZerithVAPolicy:
     """Cast weights to ``dtype`` except FP32 conditioners; buffers stay FP32."""
     fp32_ids = {
         id(parameter)
@@ -53,7 +55,7 @@ def _move_policy(policy: FaMWAMPolicy, device, dtype) -> FaMWAMPolicy:
 
 
 def export_deployment_artifact(
-    policy: FaMWAMPolicy,
+    policy: ZerithVAPolicy,
     output_dir: str | Path,
     *,
     action_schema: Any,
@@ -72,7 +74,7 @@ def export_deployment_artifact(
     save_file(state, str(weights))
     manifest = {
         "format": ARTIFACT_FORMAT,
-        "config": _json(policy.config),
+        "config": _json(ZerithVAConfig.from_dict(policy.config.as_dict())),
         "action_schema": _json(action_schema),
         "camera_schema": _json(camera_schema),
         "normalization_stats": _json(normalization_stats),
@@ -96,13 +98,15 @@ def load_deployment_artifact(
     device: str | torch.device = "cpu",
     dtype: Optional[torch.dtype] = None,
     verify_weight_sha256: bool = False,
-) -> Tuple[FaMWAMPolicy, dict]:
+) -> Tuple[ZerithVAPolicy, dict]:
     root = Path(artifact_dir)
     manifest = json.loads((root / MANIFEST_FILE).read_text())
+    if manifest.get("format") not in (ARTIFACT_FORMAT, LEGACY_ARTIFACT_FORMAT):
+        raise ValueError(f"unsupported Zerith VA deployment artifact format: {manifest.get('format')!r}")
     weights = root / WEIGHT_FILE
     if verify_weight_sha256 and sha256_file(weights) != manifest["weights"]["sha256"]:
         raise RuntimeError("deployment weight SHA-256 mismatch")
-    policy = FaMWAMPolicy(FaMWAMConfig.from_dict(manifest["config"]))
+    policy = ZerithVAPolicy(ZerithVAConfig.from_dict(manifest["config"]))
     policy.load_state_dict(load_file(str(weights), device="cpu"), strict=True)
     policy = _move_policy(policy, device, dtype).eval()
     return policy, manifest

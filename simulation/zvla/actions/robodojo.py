@@ -1,4 +1,4 @@
-"""RoboDojo dual-arm absolute-target to Z-VLA source-action conversion.
+"""RoboDojo dual-arm absolute-target to Zerith VA source-action conversion.
 
 The official EE LeRobot release stores both ``observation.state`` and
 ``action`` as 16-D vectors in this order::

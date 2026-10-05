@@ -6,7 +6,7 @@ relative-rotation, gripper binarization or per-chunk normalization is used.
 import torch
 from .mixed_native7 import MinMaxMixedActionCodec
 from .state_trajectory import _fp32_robot_boundary, _strict_matrix
-from metaworld_benchmark.v52_contract import (ROBOT, PROTOCOL, STATS_FORMAT,
+from metaworld_benchmark.contract import (ROBOT, PROTOCOL, STATS_FORMAT,
     STATE_SLOTS, ACTION_LAYOUT, digest)
 
 

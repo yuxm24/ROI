@@ -1,4 +1,4 @@
-"""Exact field sets shared by FaM datasets, collators, and models."""
+"""Exact field sets shared by Zerith VA datasets, collators, and models."""
 
 FAM_ROBOT_SAMPLE_KEYS = frozenset({
     "observation_latents",
@@ -44,7 +44,7 @@ FAM_ABSOLUTE_POSE_GEOMETRY_ROBOT_SAMPLE_KEYS = (
     | frozenset({"geometry_features", "geometry_valid"})
 )
 
-# v5.2 State20 boundary: the anchor is always an absolute observation state.
+# State20 boundary: the anchor is always an absolute observation state.
 # A sealed per-shard target contract selects either robot observation rows
 # t+1..t+16 or causally transcoded LIBERO OSC command rows t..t+15;
 # source_id remains telemetry only and never changes loss weighting.

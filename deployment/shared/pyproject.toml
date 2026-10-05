@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "zwam-client"
 version = "0.1.0"
-description = "ZWAM HTTP protocol and policy client"
+description = "Zerith VA HTTP protocol and policy client"
 requires-python = ">=3.10"
 license = "Apache-2.0"
 license-files = ["LICENSE", "NOTICE"]

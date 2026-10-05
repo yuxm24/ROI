@@ -71,7 +71,7 @@ def test_prepare_rejects_units_before_import_weights_or_copy_and_leaves_no_outpu
     tmp_path, monkeypatch, field, value
 ):
     manifest = bundle_manifest(changed_contract(field, value))
-    manifest["format"] = "fam-wam-policy-v5.2-action20-linear-g4d-teacher"
+    manifest["format"] = "zerith-va-policy-action20-linear-g4d-teacher"
     write_json(tmp_path / "manifest.json", manifest)
     original = (tmp_path / "manifest.json").read_bytes()
     monkeypatch.setattr(artifact, "verified_file", refuse)

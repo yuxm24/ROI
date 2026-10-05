@@ -1,4 +1,4 @@
-"""Post-train FaM-WAM on one benchmark with Megatron-FSDP.
+"""Post-train Zerith VA on one benchmark with Megatron-FSDP.
 
 Launch with torchrun on any number of GPUs; the shard axis defaults to the
 GPUs of one node and the replicate axis covers the remaining nodes::

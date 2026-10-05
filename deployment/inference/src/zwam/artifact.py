@@ -1,4 +1,4 @@
-"""Prepare a ZWAM policy bundle from an exported deployment artifact."""
+"""Prepare a Zerith VA policy bundle from an exported deployment artifact."""
 
 import argparse
 import json
@@ -10,28 +10,31 @@ from .assets import read_json, sha256, verified_file
 from .contract import validate_h1_command_contract
 from .encoder_contract import validate_encoder_contract
 
+ZERITH_VA_EXPORT_FORMAT = "zerith-va-policy-action20-linear-g4d-teacher"
+LEGACY_EXPORT_FORMAT = "fam-wam-policy-v5.2-action20-linear-g4d-teacher"
+
 
 def prepare(source, destination):
     source, destination = Path(source), Path(destination)
     old = read_json(source / "manifest.json")
-    if (
-        not isinstance(old, dict)
-        or old.get("format") != "fam-wam-policy-v5.2-action20-linear-g4d-teacher"
+    if not isinstance(old, dict) or old.get("format") not in (
+        ZERITH_VA_EXPORT_FORMAT,
+        LEGACY_EXPORT_FORMAT,
     ):
         raise ValueError(
-            "Expected export format fam-wam-policy-v5.2-action20-linear-g4d-teacher; "
-            "provide the exported weights and manifest described in the Zerith-VA README"
+            "Expected export format zerith-va-policy-action20-linear-g4d-teacher; "
+            "provide the exported weights and manifest described in the Zerith VA README"
         )
     stats = old.get("normalization_stats")
     validate_h1_command_contract(stats.get("command_contract") if isinstance(stats, dict) else None)
     validate_encoder_contract(old.get("config"))
-    from zwam_core.models.fam_wam.config import FaMWAMConfig
+    from zwam_core.models.zerith_va.config import ZerithVAConfig
 
-    allowed = {f.name for f in fields(FaMWAMConfig)}
+    allowed = {f.name for f in fields(ZerithVAConfig)}
     config = {k: v for k, v in old["config"].items() if k in allowed}
     if any("rtc" in k.lower() and bool(v) for k, v in old["config"].items()):
         raise ValueError("RTC-enabled checkpoints are incompatible with this policy loader")
-    parsed = FaMWAMConfig.from_dict(config)
+    parsed = ZerithVAConfig.from_dict(config)
     if not parsed.h1_command23:
         raise ValueError("H1 Command23 weights required")
     schema = old["action_schema"]
@@ -56,7 +59,7 @@ def prepare(source, destination):
     shutil.copyfile(model, destination / "model.safetensors")
     result = dict(
         format="zwam-h1-inference-v1",
-        config=config,
+        config=parsed.as_dict(),
         normalization_stats=old["normalization_stats"],
         weights_sha256=sha256(destination / "model.safetensors"),
         vae_sha256=old["vae_encoder"]["sha256"],

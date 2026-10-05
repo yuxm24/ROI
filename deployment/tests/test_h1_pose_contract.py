@@ -69,7 +69,7 @@ def test_prepare_rejects_frame_before_weights_and_creates_no_destination(
 ):
     source, destination = tmp_path / "source", tmp_path / "destination"
     manifest = bundle_manifest(contract)
-    manifest["format"] = "fam-wam-policy-v5.2-action20-linear-g4d-teacher"
+    manifest["format"] = "zerith-va-policy-action20-linear-g4d-teacher"
     write_json(source / "manifest.json", manifest)
     monkeypatch.setattr(artifact, "verified_file", refuse)
     before = (source / "manifest.json").read_bytes()
@@ -109,7 +109,7 @@ def test_loaders_reject_frame_before_gpu_weights_or_external_assets(
 def test_wrong_frame_requires_no_torch_model_or_vendor_imports(tmp_path, monkeypatch, entrypoint):
     manifest = bundle_manifest({"pose_frame": "world", "frame_evidence": "declared source"})
     if entrypoint == "prepare":
-        manifest["format"] = "fam-wam-policy-v5.2-action20-linear-g4d-teacher"
+        manifest["format"] = "zerith-va-policy-action20-linear-g4d-teacher"
     write_json(tmp_path / "manifest.json", manifest)
     original_import = builtins.__import__
 
@@ -155,10 +155,10 @@ def test_doctor_reports_incompatible_frame_in_both_asset_modes(
 
 
 def tiny_config():
-    from zwam_core.models.fam_wam.config import FaMWAMConfig
+    from zwam_core.models.zerith_va.config import ZerithVAConfig
 
     # Keep the real encoder interface with a small internal model for CPU loading.
-    return FaMWAMConfig.tiny(
+    return ZerithVAConfig.tiny(
         latent_channels=48,
         text_dim=4096,
         text_length=64,
@@ -221,7 +221,7 @@ def full_stats(contract):
 
 def exported_manifest(stats, weights_digest):
     return {
-        "format": "fam-wam-policy-v5.2-action20-linear-g4d-teacher",
+        "format": "zerith-va-policy-action20-linear-g4d-teacher",
         "config": tiny_config().as_dict(),
         "normalization_stats": stats,
         "action_schema": {
@@ -261,7 +261,10 @@ def test_codec_rejects_missing_frame_evidence_or_incompatible_frame(contract):
     assert stats == original
 
 
-def test_body_frame_preserves_unverified_physical_status_and_source_evidence(tmp_path):
+@pytest.mark.parametrize("legacy_metadata", [False, True], ids=["canonical", "legacy-metadata"])
+def test_body_frame_preserves_unverified_physical_status_and_source_evidence(
+    tmp_path, legacy_metadata
+):
     from zwam_core.actions.h1 import H1Command23Codec, digest
 
     contract = body_contract()
@@ -277,13 +280,20 @@ def test_body_frame_preserves_unverified_physical_status_and_source_evidence(tmp
     source.mkdir()
     weights = source / "model.safetensors"
     weights.write_bytes(b"synthetic copy-only asset")
-    write_json(source / "manifest.json", exported_manifest(stats, sha256(weights)))
+    manifest = exported_manifest(stats, sha256(weights))
+    if legacy_metadata:
+        from zwam_core.models.zerith_va.config import LEGACY_TEACHER_ARCHITECTURE_VERSION
+
+        manifest["format"] = artifact.LEGACY_EXPORT_FORMAT
+        manifest["config"]["architecture_version"] = LEGACY_TEACHER_ARCHITECTURE_VERSION
+    write_json(source / "manifest.json", manifest)
     prepared = artifact.prepare(source, tmp_path / "prepared")
     saved = json.loads((tmp_path / "prepared/manifest.json").read_text())
 
     assert prepared["normalization_stats"] == saved["normalization_stats"] == stats
     assert saved["normalization_stats"]["command_contract"] == original
     assert saved["normalization_stats"]["command_contract"]["physical_semantics_verified"] is False
+    assert saved["config"]["architecture_version"] == tiny_config().architecture_version
     assert (tmp_path / "prepared/model.safetensors").read_bytes() == weights.read_bytes()
 
 
@@ -291,11 +301,11 @@ def write_tiny_bundle(root, *, legacy_native=False):
     torch = pytest.importorskip("torch")
     safetensors = pytest.importorskip("safetensors.torch")
     from zwam_core.actions.h1 import SOURCE_NATIVE_CONTRACT, H1Command23Codec, digest
-    from zwam_core.models.fam_wam.runtime import FaMWAMV5TeacherPolicy
+    from zwam_core.models.zerith_va.runtime import ZerithVATeacherPolicy
 
     config = tiny_config()
     stats = full_stats(body_contract())
-    policy = FaMWAMV5TeacherPolicy(config)
+    policy = ZerithVATeacherPolicy(config)
     policy.state_codec = H1Command23Codec(stats)
     if legacy_native:
         # Model a historical checkpoint without asking the new codec to accept its frame.
@@ -319,11 +329,20 @@ def write_tiny_bundle(root, *, legacy_native=False):
     return json.loads((root / "manifest.json").read_text())
 
 
-def test_body_frame_full_checkpoint_loads_on_cpu_and_keeps_original_contract(tmp_path):
+@pytest.mark.parametrize("legacy_metadata", [False, True], ids=["canonical", "legacy-metadata"])
+def test_body_frame_full_checkpoint_loads_on_cpu_and_keeps_original_contract(
+    tmp_path, legacy_metadata
+):
     manifest = write_tiny_bundle(tmp_path)
+    if legacy_metadata:
+        from zwam_core.models.zerith_va.config import LEGACY_TEACHER_ARCHITECTURE_VERSION
+
+        manifest["config"]["architecture_version"] = LEGACY_TEACHER_ARCHITECTURE_VERSION
+        write_json(tmp_path / "manifest.json", manifest)
     policy, loaded = model.load_policy(tmp_path, "cpu")
     assert loaded == manifest
     assert next(policy.parameters()).device.type == "cpu"
+    assert policy.config.architecture_version == tiny_config().architecture_version
     assert loaded["normalization_stats"]["command_contract"] == body_contract()
 
 

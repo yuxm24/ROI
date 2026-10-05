@@ -1,1 +1,1 @@
-"""Z-VLA integration for the official RoboDojo simulation benchmark."""
+"""Zerith VA integration for the official RoboDojo simulation benchmark."""

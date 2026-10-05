@@ -1,4 +1,4 @@
-"""Fail-closed collators for FaM-WAM batch contracts."""
+"""Fail-closed collators for Zerith VA batch contracts."""
 
 from __future__ import annotations
 
@@ -31,7 +31,7 @@ def _strict_stack(
         extra = sorted(actual - expected_keys)
         if missing or extra:
             raise KeyError(
-                f"sample {index} violates strict FaM contract: "
+                f"sample {index} violates strict Zerith VA contract: "
                 f"missing={missing}, extra={extra}"
             )
         invalid = sorted(
@@ -59,7 +59,7 @@ def _strict_stack(
 
 
 @COLLATORS.register_module()
-class FaMRobotCollator:
+class ZerithVARobotCollator:
     def __call__(
         self, batch: Sequence[Mapping[str, torch.Tensor]]
     ) -> Dict[str, torch.Tensor]:
@@ -67,7 +67,7 @@ class FaMRobotCollator:
 
 
 @COLLATORS.register_module()
-class FaMGeometryRobotCollator:
+class ZerithVAGeometryRobotCollator:
     def __call__(
         self, batch: Sequence[Mapping[str, torch.Tensor]]
     ) -> Dict[str, torch.Tensor]:
@@ -75,7 +75,7 @@ class FaMGeometryRobotCollator:
 
 
 @COLLATORS.register_module()
-class FaMAbsolutePoseRobotCollator:
+class ZerithVAAbsolutePoseRobotCollator:
     """Collate only the canonical raw absolute-pose public contract."""
 
     def __call__(
@@ -85,7 +85,7 @@ class FaMAbsolutePoseRobotCollator:
 
 
 @COLLATORS.register_module()
-class FaMAbsolutePoseGeometryRobotCollator:
+class ZerithVAAbsolutePoseGeometryRobotCollator:
     """Absolute pose batches with frame-aligned frozen geometry tokens."""
 
     def __call__(
@@ -96,7 +96,7 @@ class FaMAbsolutePoseGeometryRobotCollator:
 
 
 @COLLATORS.register_module()
-class FaMStateTrajectoryRobotCollator:
+class ZerithVAStateTrajectoryRobotCollator:
     """Collate the state-only absolute State34 public contract."""
 
     def __call__(
@@ -106,7 +106,7 @@ class FaMStateTrajectoryRobotCollator:
 
 
 @COLLATORS.register_module()
-class FaMStateTrajectoryGeometryRobotCollator:
+class ZerithVAStateTrajectoryGeometryRobotCollator:
     """State34 batches with frame-aligned frozen geometry tokens."""
 
     def __call__(
@@ -117,7 +117,7 @@ class FaMStateTrajectoryGeometryRobotCollator:
 
 
 @COLLATORS.register_module()
-class FaMVideoCollator:
+class ZerithVAVideoCollator:
     def __call__(
         self, batch: Sequence[Mapping[str, torch.Tensor]]
     ) -> Dict[str, torch.Tensor]:
@@ -125,7 +125,7 @@ class FaMVideoCollator:
 
 
 @COLLATORS.register_module()
-class FaMPairedCollator:
+class ZerithVAPairedCollator:
     """Keep equal robot/video microbatches on every rank and every step."""
 
     def __call__(self, batch):

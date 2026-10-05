@@ -25,7 +25,7 @@ policy_server_host=${10:-localhost}
   exit 2
 }
 [[ -n "${ZVLA_SERVER_URL:-}" ]] || {
-  echo "ZVLA_SERVER_URL must point to one dedicated Z-VLA HTTP service" >&2
+  echo "ZVLA_SERVER_URL must point to one dedicated Zerith VA HTTP service" >&2
   exit 2
 }
 

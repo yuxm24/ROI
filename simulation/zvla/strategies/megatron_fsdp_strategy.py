@@ -288,7 +288,7 @@ class MegatronFSDPStrategy(BaseStrategy):
     @staticmethod
     def _prepare_compute_parameters(model: nn.Module) -> None:
         """Create BF16 compute weights; FP32 conditioners stay FP32."""
-        from zvla.models.fam_wam.primitives import FP32Linear
+        from zvla.models.zerith_va.primitives import FP32Linear
 
         fp32_ids = {
             id(parameter)
@@ -314,7 +314,7 @@ class MegatronFSDPStrategy(BaseStrategy):
         complete conditioner keeps each mathematical module intact while the
         heavy Wan/Reader blocks alone use the two-buffer unit pool.
         """
-        from zvla.models.fam_wam.primitives import (
+        from zvla.models.zerith_va.primitives import (
             FP32Linear,
             SinusoidalConditioner,
         )
@@ -370,8 +370,8 @@ class MegatronFSDPStrategy(BaseStrategy):
         self._move_buffers(model, self.training_device)
         conditioner_bucket_size = self._conditioner_bucket_size(model)
         fsdp_unit_modules = [
-            "zvla.models.fam_wam.primitives.WanCompatibleBlock",
-            "zvla.models.fam_wam.policy_reader.MixedReaderLayer",
+            "zvla.models.zerith_va.primitives.WanCompatibleBlock",
+            "zvla.models.zerith_va.policy_reader.MixedReaderLayer",
         ]
 
         api = self._api
@@ -473,7 +473,7 @@ class MegatronFSDPStrategy(BaseStrategy):
 
         MCore deliberately leaves ``is_last_microbatch`` unset when automatic
         synchronization is disabled.  In HSDP that still launches node-local
-        reduce-scatter, but skips the outer replica all-reduce.  Z-VLA trains
+        reduce-scatter, but skips the outer replica all-reduce.  Zerith VA trains
         without gradient accumulation, so every backward is the final
         microbatch.  The MCore ``no_sync()`` context temporarily clears this
         flag and restores it for a future final microbatch if accumulation is
@@ -526,7 +526,7 @@ class MegatronFSDPStrategy(BaseStrategy):
 
     def _validate_conditioner_bucket_boundaries(self, wrapped: nn.Module) -> None:
         """Fail if MCore merges two hook-distinct FP32 conditioners."""
-        from zvla.models.fam_wam.primitives import (
+        from zvla.models.zerith_va.primitives import (
             FP32Linear,
             SinusoidalConditioner,
         )
@@ -795,6 +795,16 @@ class MegatronFSDPStrategy(BaseStrategy):
             return
         raise ValueError(f"unsupported UBR registration mode: {mode!r}")
 
+    def _unique_group_backends(self, groups) -> tuple:
+        # Singleton mesh axes may reuse WORLD. PyTorch registers a pool once
+        # per backend, so registering/unregistering it must use that identity.
+        backends = []
+        for group in groups:
+            backend = group._get_backend(self.training_device)
+            if all(backend is not existing for existing in backends):
+                backends.append(backend)
+        return tuple(backends)
+
     def _register_user_buffers_strict(self, global_step: int) -> None:
         """Register the MCore pool in the explicitly configured UBR mode.
 
@@ -821,8 +831,7 @@ class MegatronFSDPStrategy(BaseStrategy):
         dist.barrier(group=self._status_group)
         allocation_signature = self._communication_allocation_signature(buffer)
         pool_segments = self._pool_segment_signature(pool)
-        for group in buffer.ubr_groups:
-            backend = group._get_backend(self.training_device)
+        for backend in self._unique_group_backends(buffer.ubr_groups):
             self._register_pool_with_backend(
                 backend, pool, self.ubr_registration_mode)
         torch.cuda.synchronize(self.training_device)
@@ -1668,8 +1677,7 @@ class MegatronFSDPStrategy(BaseStrategy):
         if self._registered_pool is not None:
             torch.cuda.synchronize(self.training_device)
             if self._registered_pool.snapshot():
-                for group in self._registered_groups:
-                    backend = group._get_backend(self.training_device)
+                for backend in self._unique_group_backends(self._registered_groups):
                     backend.deregister_mem_pool(self._registered_pool)
             torch.cuda.synchronize(self.training_device)
             if self._is_process_group(self._status_group):

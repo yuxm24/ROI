@@ -1,20 +1,23 @@
-"""Architecture configuration for the FaM-WAM v5.2 policy."""
+"""Architecture configuration for the Zerith VA policy."""
 
 from __future__ import annotations
 
 from dataclasses import asdict, dataclass
 from typing import Any, Dict, Mapping, Tuple
 
-FAM_WAM_V52_TEACHER_ARCHITECTURE_VERSION = (
+ZERITH_VA_TEACHER_ARCHITECTURE_VERSION = (
+    "zerith-va-action20-linear-g4d-teacher")
+# Read artifacts exported before the model was renamed without changing weights.
+LEGACY_TEACHER_ARCHITECTURE_VERSION = (
     "fam-wam-action20-linear-g4d-teacher-v5.2")
 
 
 @dataclass(frozen=True)
-class FaMWAMConfig:
-    """Defaults are the released v5.2 architecture; benches override only
+class ZerithVAConfig:
+    """Defaults are the released Zerith VA architecture; benches override only
     the action interface fields."""
 
-    architecture_version: str = FAM_WAM_V52_TEACHER_ARCHITECTURE_VERSION
+    architecture_version: str = ZERITH_VA_TEACHER_ARCHITECTURE_VERSION
 
     latent_channels: int = 48
     # Twenty columns are a transport envelope: robots use relative
@@ -106,8 +109,10 @@ class FaMWAMConfig:
         return asdict(self)
 
     @classmethod
-    def from_dict(cls, value: Mapping[str, Any]) -> "FaMWAMConfig":
+    def from_dict(cls, value: Mapping[str, Any]) -> "ZerithVAConfig":
         normalized = dict(value)
+        if normalized.get("architecture_version") == LEGACY_TEACHER_ARCHITECTURE_VERSION:
+            normalized["architecture_version"] = ZERITH_VA_TEACHER_ARCHITECTURE_VERSION
         for key in ("camera_rope_bases", "state_codec_embodiments",
                     "training_source_names", "kv_tap_layers",
                     "reader_kv_indices", "teacher_target_layers", "horizons"):
@@ -116,7 +121,7 @@ class FaMWAMConfig:
         return cls(**normalized)
 
     @classmethod
-    def tiny(cls, **overrides: Any) -> "FaMWAMConfig":
+    def tiny(cls, **overrides: Any) -> "ZerithVAConfig":
         """A few-thousand-parameter model for unit tests."""
         values: Dict[str, Any] = {
             "latent_channels": 6,

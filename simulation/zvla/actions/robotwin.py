@@ -1,7 +1,7 @@
 """RoboTwin dual-arm action conversion shared by training and evaluation.
 
 RoboTwin records absolute end-effector poses in world coordinates as
-``xyz + wxyz`` and gripper opening targets in ``[0, 1]``. Z-VLA trains on
+``xyz + wxyz`` and gripper opening targets in ``[0, 1]``. Zerith VA trains on
 the same semantic action representation used by LIBERO: world-frame
 translation deltas, world-frame left-composed rotation vectors, and a
 gripper command where ``-1`` is open and ``+1`` is closed.

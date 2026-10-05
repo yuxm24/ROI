@@ -3,7 +3,7 @@
 This module deliberately depends only on NumPy. The offline asset author,
 the training-side compatibility export, and the LIBERO rollout client all use
 this one implementation, while the simulator environment remains independent
-from the much larger Z-VLA training import graph.
+from the much larger Zerith VA training import graph.
 """
 
 from __future__ import annotations

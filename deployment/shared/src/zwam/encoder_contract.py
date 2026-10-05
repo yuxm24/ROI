@@ -18,8 +18,8 @@ _DEFAULT_TEXT_LENGTH = 64
 def validate_encoder_contract(config):
     """Require the deployed UMT5/Wan2.2/VGGT input and output dimensions.
 
-    ``config`` is the JSON configuration object, or ``FaMWAMConfig.as_dict()``.
-    Omitted interface fields use the production FaMWAMConfig defaults above;
+    ``config`` is the JSON configuration object, or ``ZerithVAConfig.as_dict()``.
+    Omitted interface fields use the production ZerithVAConfig defaults above;
     explicit values must be JSON integers. Logical text contexts may contain
     at least 64 rows because the model supports a compact 64-row prefix with
     a logical zero-padded suffix. Other model fields remain the responsibility

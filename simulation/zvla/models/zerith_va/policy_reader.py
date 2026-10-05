@@ -9,7 +9,7 @@ import torch
 import torch.nn as nn
 from torch.utils._pytree import register_dataclass
 
-from .config import FaMWAMConfig
+from .config import ZerithVAConfig
 from .kv import DenseKV, LayerKV
 from .primitives import (
     ProjectedKV,
@@ -396,7 +396,7 @@ class MixedReaderLayer(nn.Module):
 class PolicyReader(nn.Module):
     """Recursive Reader blocks over a fixed-size world K/V interface."""
 
-    def __init__(self, config: FaMWAMConfig) -> None:
+    def __init__(self, config: ZerithVAConfig) -> None:
         super().__init__()
         self.config = config
         self.action_embed = nn.Linear(config.action_dim, config.reader_dim)

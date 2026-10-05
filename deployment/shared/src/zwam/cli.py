@@ -1,4 +1,4 @@
-"""Command-line tools for ZWAM inference and robot control."""
+"""Command-line tools for Zerith VA inference and robot control."""
 
 import argparse
 from importlib import import_module
@@ -22,7 +22,9 @@ def main(argv=None):
         description=__doc__,
         epilog="Run 'zwam COMMAND --help' for command options.",
     )
-    parser.add_argument("--version", action="version", version=f"ZWAM-Deploy {__version__}")
+    parser.add_argument(
+        "--version", action="version", version=f"Zerith VA Deployment {__version__}"
+    )
     commands = parser.add_subparsers(dest="command", metavar="COMMAND")
     for name, (_, description) in COMMANDS.items():
         commands.add_parser(name, help=description, add_help=False)

@@ -1,4 +1,4 @@
-"""Load ZWAM policy bundles and manage causal visual inference sessions."""
+"""Load Zerith VA policy bundles and manage causal visual inference sessions."""
 
 from pathlib import Path
 
@@ -11,7 +11,7 @@ from .encoder_contract import validate_encoder_contract
 
 def move_policy(policy, device):
     import torch
-    from zwam_core.models.fam_wam.primitives import FP32Linear
+    from zwam_core.models.zerith_va.primitives import FP32Linear
 
     fp32 = {
         id(p)
@@ -41,15 +41,15 @@ def load_policy(root, device):
     import torch
     from safetensors.torch import load_file
     from zwam_core.actions.h1 import H1Command23Codec
-    from zwam_core.models.fam_wam.config import (
-        FAM_WAM_V52_TEACHER_ARCHITECTURE_VERSION,
-        FaMWAMConfig,
+    from zwam_core.models.zerith_va.config import (
+        ZERITH_VA_TEACHER_ARCHITECTURE_VERSION,
+        ZerithVAConfig,
     )
-    from zwam_core.models.fam_wam.runtime import FaMWAMV5TeacherPolicy
+    from zwam_core.models.zerith_va.runtime import ZerithVATeacherPolicy
 
-    config = FaMWAMConfig.from_dict(manifest["config"])
+    config = ZerithVAConfig.from_dict(manifest["config"])
     if (
-        config.architecture_version != FAM_WAM_V52_TEACHER_ARCHITECTURE_VERSION
+        config.architecture_version != ZERITH_VA_TEACHER_ARCHITECTURE_VERSION
         or not config.h1_command23
         or config.action_flow_steps != 10
         or config.action_prediction_steps != 16
@@ -70,7 +70,7 @@ def load_policy(root, device):
             raise ValueError("Checkpoint gripper ranges differ from the H1 state/action contract")
     # Meta construction avoids a second ~27GB initialized FP32 parameter copy.
     with torch.device("meta"):
-        policy = FaMWAMV5TeacherPolicy(config)
+        policy = ZerithVATeacherPolicy(config)
     weights = load_file(str(path), device="cpu")
     expected = policy.state_dict()
     if expected.keys() != weights.keys() or any(

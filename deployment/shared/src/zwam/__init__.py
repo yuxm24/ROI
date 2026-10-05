@@ -1,4 +1,4 @@
-"""Shared ZWAM transport. Inference and robot components install separately."""
+"""Shared Zerith VA transport. Inference and robot components install separately."""
 
 from pkgutil import extend_path
 

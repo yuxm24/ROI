@@ -9,7 +9,7 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
-from .config import FaMWAMConfig
+from .config import ZerithVAConfig
 from .kv import DenseKV, LayerKV
 from .primitives import (
     gather_packed_tokens,
@@ -21,7 +21,7 @@ from .primitives import (
 class GeometryTokenBridge(nn.Module):
     """Map frozen VGGT patch features into Reader-width geometry tokens."""
 
-    def __init__(self, config: FaMWAMConfig) -> None:
+    def __init__(self, config: ZerithVAConfig) -> None:
         super().__init__()
         self.config = config
         self.input_norm = nn.LayerNorm(config.geometry_feature_dim)
@@ -95,7 +95,7 @@ class GeometryAnchored4DBinder(nn.Module):
     canonical patch and the preceding temporal Value difference.
     """
 
-    def __init__(self, config: FaMWAMConfig) -> None:
+    def __init__(self, config: ZerithVAConfig) -> None:
         super().__init__()
         self.config = config
         self.residual_scale = 1.0

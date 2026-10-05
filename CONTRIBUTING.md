@@ -1,8 +1,9 @@
-# Contributing to Zerith-VA
+# Contributing to Zerith VA
 
 Thanks for contributing. Keep changes focused and describe the behavior,
 affected component and verification in your pull request. Start with the
-[architecture](README.md#architecture), [simulation workflow](README.md#simulation-post-training) and [H1 workflow](README.md#h1-deployment).
+[project overview](README.md#overview), [simulation guide](docs/simulation.md)
+and [H1 deployment guide](docs/deployment.md).
 
 ## Before submitting
 
@@ -21,9 +22,10 @@ Useful checks from the repository root:
 ```bash
 python scripts/check_release.py
 python -m pytest -q deployment/tests
-python -m pytest -q simulation/tests/test_public_posttrain.py
+PYTHONPATH=simulation python -m pytest -q simulation/tests
 ```
 
-Install the dependencies for the component you are testing first. The
-[main README](README.md#validation-and-license) lists the environment and validation commands. Include the commands you ran and their results
-in your pull request.
+Use the environment described in the corresponding guide and install the
+deployment packages before running deployment tests. For local HTTP tests,
+set `NO_PROXY=127.0.0.1,localhost` so requests bypass proxy services.
+Include the commands you ran and their results in your pull request.

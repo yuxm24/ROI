@@ -1,12 +1,12 @@
 """Build the resumable shard-aware sampler."""
-from .shard_samplers import FaMShardAwareBatchSampler
+from .shard_samplers import ZerithVAShardAwareBatchSampler
 
 
 def build_sampler_from_cfg(sampler_cfg, dataset, batch_size, world_size, rank, seed, dataset_cfg):
     cfg = dict(sampler_cfg)
     kind = cfg.pop('type')
     cfg.setdefault('drop_last', False)
-    sampler_class = EpisodeBalancedBatchSampler if kind == 'EpisodeBalancedBatchSampler' else FaMShardAwareBatchSampler
+    sampler_class = EpisodeBalancedBatchSampler if kind == 'EpisodeBalancedBatchSampler' else ZerithVAShardAwareBatchSampler
     return sampler_class(dataset=dataset, batch_size=batch_size,
         num_replicas=world_size, rank=rank, seed=seed, **cfg)
 

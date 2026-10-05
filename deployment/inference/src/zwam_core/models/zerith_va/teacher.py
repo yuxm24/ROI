@@ -9,7 +9,7 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
-from .config import FaMWAMConfig
+from .config import ZerithVAConfig
 from .kv import DenseKV, LayerKV
 from .primitives import (
     SinusoidalConditioner,
@@ -36,7 +36,7 @@ class WanWorldRequest:
 class EvolvingWanWorld(nn.Module):
     """Wan encoder with checkpoint-compatible projections and camera embeddings."""
 
-    def __init__(self, config: FaMWAMConfig, *, allow_uninitialized: bool = False) -> None:
+    def __init__(self, config: ZerithVAConfig, *, allow_uninitialized: bool = False) -> None:
         super().__init__()
         self.config = config
         self.allow_uninitialized = bool(allow_uninitialized)
@@ -315,7 +315,7 @@ class JointPrefillWanCarrier(nn.Module):
 
     carrier_kind = "joint_max_noise_future_prefill"
 
-    def __init__(self, config: FaMWAMConfig, *, allow_uninitialized: bool = False) -> None:
+    def __init__(self, config: ZerithVAConfig, *, allow_uninitialized: bool = False) -> None:
         super().__init__()
         self.config = config
         self.wan = LiveWanWorld(config, allow_uninitialized=allow_uninitialized)

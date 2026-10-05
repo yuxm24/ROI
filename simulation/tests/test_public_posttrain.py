@@ -10,10 +10,10 @@ from zvla.posttrain.recipes import BENCHMARKS, recipe
 from zvla.posttrain.prepare import codec_statistics
 from zvla.posttrain.sources import convert_rows
 from zvla.datasets.benchmark import BenchmarkDataset
-from zvla.datasets.utils.shard_samplers import FaMShardAwareBatchSampler
+from zvla.datasets.utils.shard_samplers import ZerithVAShardAwareBatchSampler
 from zvla.actions.mixed_native7 import codec_class
-from zvla.models.fam_wam import FaMWAMConfig, FaMWAMPostTrainModel, FaMWAMPolicy
-from zvla.models.fam_wam.deployment import export_deployment_artifact, load_deployment_artifact
+from zvla.models.zerith_va import ZerithVAConfig, ZerithVAPostTrainModel, ZerithVAPolicy
+from zvla.models.zerith_va.deployment import export_deployment_artifact, load_deployment_artifact
 
 
 def rows(bench, n=9):
@@ -54,7 +54,7 @@ def test_native_action_alignment_tail_and_codec(tmp_path,bench):
     assert sample['geometry_valid'].sum()==len(BENCHMARKS[bench]['cameras'])*49
     assert not ds[-1]['target_state_abs_valid'].any()
     stats=codec_statistics(bench,[data])
-    cfg=FaMWAMConfig.tiny(metaworld_native4=bench=='metaworld',state_codec_embodiments=tuple(stats['embodiments']))
+    cfg=ZerithVAConfig.tiny(metaworld_native4=bench=='metaworld',state_codec_embodiments=tuple(stats['embodiments']))
     codec=codec_class(cfg)(stats,embodiments=cfg.state_codec_embodiments)
     args=[sample[k][None] for k in ('current_state_abs','current_state_abs_valid','target_state_abs','target_state_abs_valid','embodiment_id')]
     encoded,valid,_,_=codec.encode_training_targets(*args)
@@ -67,13 +67,13 @@ def test_arbitrary_rank_count_exact_once_and_resume(tmp_path,world):
     ds=dataset(tmp_path,'libero')
     draws=[]
     for rank in range(world):
-        sampler=FaMShardAwareBatchSampler(ds,2,world,rank,drop_last=False,exact_once=True,global_batch_mixing=True)
+        sampler=ZerithVAShardAwareBatchSampler(ds,2,world,rank,drop_last=False,exact_once=True,global_batch_mixing=True)
         iterator = iter(sampler)
         first = next(iterator)
         cursor = sampler.state_dict()
         rest = list(iterator)
         draws += [x for batch in [first]+rest for x in batch if x!=-1]
-        restored=FaMShardAwareBatchSampler(ds,2,world,rank,drop_last=False,exact_once=True,global_batch_mixing=True)
+        restored=ZerithVAShardAwareBatchSampler(ds,2,world,rank,drop_last=False,exact_once=True,global_batch_mixing=True)
         restored.load_state_dict(cursor)
         assert list(restored)==rest
     assert sorted(draws)==list(range(len(ds)))
@@ -84,15 +84,16 @@ def test_recipe(bench):
     cfg=recipe(bench)
     assert cfg['training']['grad_accumulation_steps']==1
     assert cfg['model']['pretrained_checkpoint'].endswith('zvla-base.safetensors')
-    FaMWAMConfig.from_dict(cfg['model']['config'])
+    assert cfg['model']['type']=='ZerithVAPostTrainModel'
+    ZerithVAConfig.from_dict(cfg['model']['config'])
 
 
 def test_checkpoint_loader_preserves_target_codec_and_derives_native4(tmp_path):
-    model=FaMWAMPostTrainModel(FaMWAMConfig.tiny().as_dict())
+    model=ZerithVAPostTrainModel(ZerithVAConfig.tiny().as_dict())
     source={k:v.contiguous() for k,v in model.state_dict().items() if not k.startswith('state_codec.')}
     path=tmp_path/'base.safetensors';save_file(source,str(path))
-    cfg=FaMWAMConfig.tiny(metaworld_native4=True,state_codec_embodiments=('metaworld_sawyer_applied4',))
-    loaded=FaMWAMPostTrainModel(cfg.as_dict(),pretrained_checkpoint=str(path))
+    cfg=ZerithVAConfig.tiny(metaworld_native4=True,state_codec_embodiments=('metaworld_sawyer_applied4',))
+    loaded=ZerithVAPostTrainModel(cfg.as_dict(),pretrained_checkpoint=str(path))
     expected={k:v.clone() for k,v in loaded.state_codec.state_dict().items()}
     loaded.load_pretrained_weights()
     for k,v in loaded.state_codec.state_dict().items():assert torch.equal(v,expected[k])
@@ -106,11 +107,26 @@ def test_checkpoint_loader_preserves_target_codec_and_derives_native4(tmp_path):
 
 
 def test_deployment_roundtrip(tmp_path):
-    policy=FaMWAMPolicy(FaMWAMConfig.tiny())
+    policy=ZerithVAPolicy(ZerithVAConfig.tiny())
     export_deployment_artifact(policy,tmp_path,action_schema={'benchmark':'libero'},camera_schema={},normalization_stats={},vae_encoder_provenance={})
     loaded,manifest=load_deployment_artifact(tmp_path)
+    assert manifest['format']=='zerith-va-policy-action20-linear-g4d-teacher'
+    assert manifest['config']['architecture_version']=='zerith-va-action20-linear-g4d-teacher'
     assert manifest['provenance']=={}
     for k,v in policy.state_dict().items():assert torch.equal(v,loaded.state_dict()[k])
+
+    # An artifact from before the rename keeps its weights and loads under the new name.
+    manifest['format']='fam-wam-policy-v5.2-action20-linear-g4d-teacher'
+    manifest['config']['architecture_version']='fam-wam-action20-linear-g4d-teacher-v5.2'
+    (tmp_path/'manifest.json').write_text(json.dumps(manifest))
+    loaded,_=load_deployment_artifact(tmp_path)
+    assert loaded.config.architecture_version=='zerith-va-action20-linear-g4d-teacher'
+    for k,v in policy.state_dict().items():assert torch.equal(v,loaded.state_dict()[k])
+
+    manifest['format']='unknown-policy'
+    (tmp_path/'manifest.json').write_text(json.dumps(manifest))
+    with pytest.raises(ValueError,match='unsupported Zerith VA deployment artifact format'):
+        load_deployment_artifact(tmp_path)
 
 
 def test_training_loader_constructs_real_registered_batch(tmp_path):

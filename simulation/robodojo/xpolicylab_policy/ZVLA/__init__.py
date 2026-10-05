@@ -1,1 +1,1 @@
-"""XPolicyLab adapter that connects RoboDojo to a Z-VLA HTTP server."""
+"""XPolicyLab adapter that connects RoboDojo to a Zerith VA HTTP server."""

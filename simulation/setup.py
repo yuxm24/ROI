@@ -24,14 +24,14 @@ fa3_headers = sorted(
 )
 
 long_description = (
-    "Z-VLA benchmark post-training component of Zerith-VA. "
+    "Zerith VA benchmark post-training component. "
     "The repository README contains installation, training, export and evaluation instructions."
 )
 
 setup(
     name="zvla",
     version="0.0.1",
-    description="Z-VLA benchmark post-training source",
+    description="Zerith VA benchmark post-training source",
     long_description=long_description,
     long_description_content_type="text/markdown",
     packages=find_packages(),

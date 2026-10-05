@@ -1,1 +1,1 @@
-"""Z-VLA benchmark training and inference."""
+"""Zerith VA benchmark training and inference."""

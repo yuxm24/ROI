@@ -1,4 +1,4 @@
-"""FaM-WAM v5.2 post-training model, inference policy and weight loaders.
+"""Zerith VA post-training model, inference policy and weight loaders.
 
 Wan2.2 world prefill -> VGGT geometry bridge -> G4D value binding -> Reader.
 The benchmark owns the state/action codec; the released base checkpoint
@@ -20,7 +20,7 @@ from zvla.actions.mixed_native7 import codec_class
 from zvla.core import OptimizerGroupSpec, VLAForwardOutput, VLAModel
 from zvla.engines import VLAS
 
-from .config import FaMWAMConfig
+from .config import ZerithVAConfig
 from .geometry import GeometryAnchored4DBinder, GeometryTokenBridge
 from .kv import DenseKV, LayerKV
 from .policy_reader import (
@@ -73,7 +73,7 @@ def _read_module_state(handle, prefix: str, module: nn.Module,
 
 
 @VLAS.register_module()
-class FaMWAMPostTrainModel(VLAModel):
+class ZerithVAPostTrainModel(VLAModel):
     """Jointly trains Wan, the Reader, the geometry bridge and G4D."""
 
     def __init__(
@@ -90,7 +90,7 @@ class FaMWAMPostTrainModel(VLAModel):
         g4d_gate_lr_scale: float = 10.0,
     ) -> None:
         super().__init__()
-        self.fam_config = FaMWAMConfig.from_dict(config or {})
+        self.fam_config = ZerithVAConfig.from_dict(config or {})
         self.teacher_carrier = JointPrefillWanCarrier(self.fam_config)
         self.policy_reader = PolicyReader(self.fam_config)
         self.geometry_bridge = GeometryTokenBridge(self.fam_config)
@@ -279,10 +279,10 @@ class FaMWAMPostTrainModel(VLAModel):
             (name, getattr(self, name)) for name in ARTIFACT_MODULES)
 
 
-class FaMWAMPolicy(nn.Module):
+class ZerithVAPolicy(nn.Module):
     """Inference policy: absolute State20 in, absolute State20 targets out."""
 
-    def __init__(self, config: FaMWAMConfig) -> None:
+    def __init__(self, config: ZerithVAConfig) -> None:
         super().__init__()
         self.config = config
         self.world = JointPrefillWanCarrier(config)
@@ -405,10 +405,10 @@ class FaMWAMPolicy(nn.Module):
 
 def load_policy_from_model_artifact(
     path: str | Path,
-    config: FaMWAMConfig,
-) -> FaMWAMPolicy:
+    config: ZerithVAConfig,
+) -> ZerithVAPolicy:
     """Load a training hand-off (``model-step-*.safetensors``) for export."""
-    policy = FaMWAMPolicy(config)
+    policy = ZerithVAPolicy(config)
     names = {"world": "teacher_carrier"}
     state = {}
     with safe_open(str(path), framework="pt", device="cpu") as handle:

@@ -220,7 +220,7 @@ class VLATrainer:
         sampler = self._get_sampler()
         if sampler is None or not hasattr(sampler, 'load_state_dict'):
             raise TypeError(
-                'FaM-WAM resume requires a stateful batch sampler'
+                'Zerith VA resume requires a stateful batch sampler'
             )
         sampler.load_state_dict(sampler_state)
         self._resume_sampler_state_loaded = True
@@ -867,7 +867,7 @@ class VLATrainer:
             # reached twice. Broken checkpoint discovery therefore fails the
             # probe instead of yielding a false success.
             raise RuntimeError(
-                'intentional v5.2 kill-and-resume probe after durable '
+                'intentional Zerith VA kill-and-resume probe after durable '
                 f'checkpoint step {self.global_step}')
 
     def _publish_geometry_consumer_ack(

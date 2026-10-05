@@ -2,60 +2,60 @@
   "format": "source-provenance-v1",
   "files": [
     {
-      "file": "inference/src/zwam_core/models/fam_wam/runtime.py",
+      "file": "inference/src/zwam_core/models/zerith_va/runtime.py",
       "source_module": "zvla/models/fam_wam/runtime.py",
       "source_sha256": "b83d8256975c16ed8d333afc78fef13b07a65a1ab3520d73afc30b8e6fc23e6d",
-      "changes": "Inference-only adaptation; package imports updated; training and diagnostic paths excluded; checkpoint parameter names retained.",
+      "changes": "Inference-only adaptation; package imports updated; training and diagnostic paths excluded; checkpoint parameter names retained. Model package and symbols renamed to Zerith VA; legacy manifest metadata remains accepted.",
       "license": "Apache-2.0",
-      "distributed_sha256": "6897a2ed6d7f279d0db459dc40a06f0a3b9b72b06bdd0e01f3d1c40d0b5c4b2a"
+      "distributed_sha256": "1e4ef6469f2e554fa7743c9059b22a7463340ff1ecaf339e1cdfffdb98605039"
     },
     {
-      "file": "inference/src/zwam_core/models/fam_wam/config.py",
+      "file": "inference/src/zwam_core/models/zerith_va/config.py",
       "source_module": "zvla/models/fam_wam/config.py",
       "source_sha256": "a1f0030991bb6fc1ea621db2e1786d56759975c8c55b377b87573caf0f3b2618",
-      "changes": "Inference-only adaptation; package imports updated; training and diagnostic paths excluded; checkpoint parameter names retained.",
+      "changes": "Inference-only adaptation; package imports updated; training and diagnostic paths excluded; checkpoint parameter names retained. Model package and symbols renamed to Zerith VA; legacy manifest metadata remains accepted.",
       "license": "Apache-2.0",
-      "distributed_sha256": "3b1bdcf754a073c59ec2997d7825bd179cb99b7372c121772378031c0fe0a385"
+      "distributed_sha256": "fcddd65226d7b3db75127989adab40ed8c465a19a7ee73f09dba4e53992b24e5"
     },
     {
-      "file": "inference/src/zwam_core/models/fam_wam/kv.py",
+      "file": "inference/src/zwam_core/models/zerith_va/kv.py",
       "source_module": "zvla/models/fam_wam/kv.py",
       "source_sha256": "6b940e709b17fe29f8f2553c3daa71fbd0e53865221f4e7d7d75dbf4b794ece7",
-      "changes": "Inference-only adaptation; package imports updated; training and diagnostic paths excluded; checkpoint parameter names retained.",
+      "changes": "Inference-only adaptation; package imports updated; training and diagnostic paths excluded; checkpoint parameter names retained. Model package and symbols renamed to Zerith VA; legacy manifest metadata remains accepted.",
       "license": "Apache-2.0",
       "distributed_sha256": "3c67cc71fd79bd2061581aafc92ffd923bc2a19bc9b48b2c879bff7f2d138676"
     },
     {
-      "file": "inference/src/zwam_core/models/fam_wam/geometry.py",
+      "file": "inference/src/zwam_core/models/zerith_va/geometry.py",
       "source_module": "zvla/models/fam_wam/geometry.py",
       "source_sha256": "76163311575e098d59b7c19fd017c683704119a650ef3853278db208f3ce6f97",
-      "changes": "Inference-only adaptation; package imports updated; training and diagnostic paths excluded; checkpoint parameter names retained.",
+      "changes": "Inference-only adaptation; package imports updated; training and diagnostic paths excluded; checkpoint parameter names retained. Model package and symbols renamed to Zerith VA; legacy manifest metadata remains accepted.",
       "license": "Apache-2.0",
-      "distributed_sha256": "1b570fcecce988efb4bf460d203cd6bd1a0ea9d47360f4c37551ff166c1a7baf"
+      "distributed_sha256": "a176cacf6301f6c28657a9b94d6eff1f2202c504b9576be9de6461497aa1752f"
     },
     {
-      "file": "inference/src/zwam_core/models/fam_wam/policy_reader.py",
+      "file": "inference/src/zwam_core/models/zerith_va/policy_reader.py",
       "source_module": "zvla/models/fam_wam/policy_reader.py",
       "source_sha256": "18caf24eadfe82912b72db4b4dc0404bc67ba4f5dd58a9b3c5a115289b4b7797",
-      "changes": "Inference-only adaptation; package imports updated; training and diagnostic paths excluded; checkpoint parameter names retained.",
+      "changes": "Inference-only adaptation; package imports updated; training and diagnostic paths excluded; checkpoint parameter names retained. Model package and symbols renamed to Zerith VA; legacy manifest metadata remains accepted.",
       "license": "Apache-2.0",
-      "distributed_sha256": "3129023589bb03fc95bf38ff60ee9571844f427a62c097120c1947d420d8b8fb"
+      "distributed_sha256": "5ab47c42135ef26c5f8a5b2a4d48fcfc39954ff6af8b072004c7701737cb00e2"
     },
     {
-      "file": "inference/src/zwam_core/models/fam_wam/primitives.py",
+      "file": "inference/src/zwam_core/models/zerith_va/primitives.py",
       "source_module": "zvla/models/fam_wam/primitives.py",
       "source_sha256": "73fb50b1a5092f7726b160924db193d3416ca919e116839f3f05b555ba7ef1df",
-      "changes": "Inference-only adaptation; package imports updated; training and diagnostic paths excluded; checkpoint parameter names retained.",
+      "changes": "Inference-only adaptation; package imports updated; training and diagnostic paths excluded; checkpoint parameter names retained. Model package and symbols renamed to Zerith VA; legacy manifest metadata remains accepted.",
       "license": "Apache-2.0",
       "distributed_sha256": "4788f276a504622ff9a380c246821f0049b031d350034c3820f917951412a14a"
     },
     {
-      "file": "inference/src/zwam_core/models/fam_wam/teacher.py",
+      "file": "inference/src/zwam_core/models/zerith_va/teacher.py",
       "source_module": "zvla/models/fam_wam/teacher.py",
       "source_sha256": "57ed31cc95ceda12a2c52f8905db698d69ba0c4b5b2412d964f737aa089f4e5c",
-      "changes": "Inference-only adaptation; package imports updated; training and diagnostic paths excluded; checkpoint parameter names retained.",
+      "changes": "Inference-only adaptation; package imports updated; training and diagnostic paths excluded; checkpoint parameter names retained. Model package and symbols renamed to Zerith VA; legacy manifest metadata remains accepted.",
       "license": "Apache-2.0",
-      "distributed_sha256": "da8d453336fb4ffb109f78ff7556d96c8d0fa074039b99403449f0d10d2547dc"
+      "distributed_sha256": "1c9b6ffb78a20f5757bc3ee1fdb3f409e7eeeb80d4d50d80a19b9d68e2913485"
     },
     {
       "file": "inference/src/zwam_core/actions/state_trajectory.py",

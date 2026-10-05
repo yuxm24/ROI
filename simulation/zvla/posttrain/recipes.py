@@ -13,14 +13,14 @@ BENCHMARKS = {
 def recipe(bench, data_root='data/prepared', checkpoint='checkpoints/zvla-base.safetensors', batch_size=10):
     spec = BENCHMARKS[bench]
     cfg = dict(
-        model=dict(type='FaMWAMPostTrainModel', pretrained_checkpoint=str(checkpoint),
+        model=dict(type='ZerithVAPostTrainModel', pretrained_checkpoint=str(checkpoint),
                    state_codec_stats=str(Path(data_root) / 'codec.json'),
                    config=dict(state_codec_embodiments=(spec['robot'],), training_source_names=(bench,),
                                metaworld_native4=bench == 'metaworld')),
         data=dict(train=dict(dataset=dict(type='BenchmarkDataset', data_root_path=str(data_root),
-                    drop_last=False, sampler=dict(type='FaMShardAwareBatchSampler', exact_once=True,
+                    drop_last=False, sampler=dict(type='ZerithVAShardAwareBatchSampler', exact_once=True,
                                                  global_batch_mixing=True)),
-                    collator=dict(type='FaMStateTrajectoryGeometryRobotCollator'),
+                    collator=dict(type='ZerithVAStateTrajectoryGeometryRobotCollator'),
                     per_device_batch_size=batch_size, num_workers=8, prefetch_factor=2, pin_memory=True)),
         distributed=dict(strategy='megatron_fsdp', mixed_precision='bf16'),
         runtime={},

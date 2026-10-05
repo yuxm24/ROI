@@ -1,4 +1,4 @@
-"""Optional Triton kernels for bandwidth-bound FaM-WAM primitives."""
+"""Optional Triton kernels for bandwidth-bound Zerith VA primitives."""
 
 from __future__ import annotations
 

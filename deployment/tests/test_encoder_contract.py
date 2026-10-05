@@ -26,9 +26,9 @@ SUPPORTED_INTERFACE = {
 def test_omitted_interface_fields_match_production_config_defaults():
     # The structural config module uses only the standard library, including
     # when installed from a wheel. Keep its defaults aligned with preflight.
-    from zwam_core.models.fam_wam.config import FaMWAMConfig
+    from zwam_core.models.zerith_va.config import ZerithVAConfig
 
-    defaults = FaMWAMConfig().as_dict()
+    defaults = ZerithVAConfig().as_dict()
     expected = {**SUPPORTED_INTERFACE, "text_length": 64}
     assert {name: defaults[name] for name in expected} == expected
     validate_encoder_contract({})

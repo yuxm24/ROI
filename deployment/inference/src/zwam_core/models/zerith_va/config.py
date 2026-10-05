@@ -5,14 +5,15 @@ from __future__ import annotations
 from dataclasses import asdict, dataclass
 from typing import Any, Dict, Mapping, Tuple
 
-FAM_WAM_V52_TEACHER_ARCHITECTURE_VERSION = "fam-wam-action20-linear-g4d-teacher-v5.2"
+ZERITH_VA_TEACHER_ARCHITECTURE_VERSION = "zerith-va-action20-linear-g4d-teacher"
+LEGACY_TEACHER_ARCHITECTURE_VERSION = "fam-wam-action20-linear-g4d-teacher-v5.2"
 
 
 @dataclass(frozen=True)
-class FaMWAMConfig:
+class ZerithVAConfig:
     """Production defaults; tests must request :meth:`tiny` explicitly."""
 
-    architecture_version: str = FAM_WAM_V52_TEACHER_ARCHITECTURE_VERSION
+    architecture_version: str = ZERITH_VA_TEACHER_ARCHITECTURE_VERSION
     latent_channels: int = 48
     action_dim: int = 23
     state_dim: int = 23
@@ -98,9 +99,9 @@ class FaMWAMConfig:
             name: getattr(self, name) for name in integer_positive if getattr(self, name) <= 0
         }
         if invalid:
-            raise ValueError(f"FaM-WAM values must be positive: {invalid}")
+            raise ValueError(f"Zerith VA values must be positive: {invalid}")
         if (
-            self.architecture_version != FAM_WAM_V52_TEACHER_ARCHITECTURE_VERSION
+            self.architecture_version != ZERITH_VA_TEACHER_ARCHITECTURE_VERSION
             or not self.h1_command23
             or not self.state_trajectory_contract
             or self.absolute_pose_contract
@@ -109,7 +110,9 @@ class FaMWAMConfig:
             or self.action_prediction_steps != 16
             or (self.action_dim, self.state_dim, self.state_trajectory_dim) != (23, 23, 23)
         ):
-            raise ValueError("This runtime requires the v5.2 H1 command23 contract and horizon16")
+            raise ValueError(
+                "This runtime requires the Zerith VA H1 command23 contract and horizon16"
+            )
         if (
             "h1" not in self.state_codec_embodiments
             or any(
@@ -184,7 +187,7 @@ class FaMWAMConfig:
         if self.g4d_binding_fusion != "linear_product":
             raise ValueError("H1 inference requires g4d_binding_fusion=linear_product")
         if tuple(self.horizons) != (1, 2, 4):
-            raise ValueError("FaM-WAM fixes future horizons to (1,2,4)")
+            raise ValueError("Zerith VA fixes future horizons to (1,2,4)")
         if self.flow_frames != max(self.horizons) + 1:
             raise ValueError("world flow clip must contain o_t through o_t+4")
 
@@ -216,7 +219,7 @@ class FaMWAMConfig:
         return asdict(self)
 
     @classmethod
-    def from_dict(cls, value: Dict[str, Any]) -> "FaMWAMConfig":
+    def from_dict(cls, value: Dict[str, Any]) -> "ZerithVAConfig":
         tuple_fields = {
             "camera_rope_bases",
             "state_codec_embodiments",
@@ -228,15 +231,17 @@ class FaMWAMConfig:
             "horizons",
         }
         normalized = dict(value)
+        if normalized.get("architecture_version") == LEGACY_TEACHER_ARCHITECTURE_VERSION:
+            normalized["architecture_version"] = ZERITH_VA_TEACHER_ARCHITECTURE_VERSION
         for key in tuple_fields:
             if key in normalized:
                 normalized[key] = tuple(normalized[key])
         return cls(**normalized)
 
     @classmethod
-    def from_document(cls, value: Mapping[str, Any]) -> "FaMWAMConfig":
+    def from_document(cls, value: Mapping[str, Any]) -> "ZerithVAConfig":
         if not isinstance(value, Mapping):
-            raise TypeError("FaM-WAM configuration document must be a mapping")
+            raise TypeError("Zerith VA configuration document must be a mapping")
         if "model" in value:
             value = value["model"]["config"]
         elif "config" in value:
@@ -244,7 +249,7 @@ class FaMWAMConfig:
         return cls.from_dict(dict(value))
 
     @classmethod
-    def tiny(cls, **overrides: Any) -> "FaMWAMConfig":
+    def tiny(cls, **overrides: Any) -> "ZerithVAConfig":
         values: Dict[str, Any] = {
             "latent_channels": 6,
             "context_frames": 3,

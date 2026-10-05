@@ -258,7 +258,7 @@ class _StatelessIndexPermutation:
                 return value
 
 
-class FaMShardAwareBatchSampler(BatchSampler):
+class ZerithVAShardAwareBatchSampler(BatchSampler):
     """Shard-aware integer-anchor batches with an optional exact-once mode.
 
     The legacy mode first makes shard-local batches and equalizes rank lengths
@@ -300,7 +300,7 @@ class FaMShardAwareBatchSampler(BatchSampler):
         **kwargs,
     ) -> None:
         if kwargs:
-            raise TypeError(f"unsupported FaM sampler options: {sorted(kwargs)}")
+            raise TypeError(f"unsupported Zerith VA sampler options: {sorted(kwargs)}")
         self.dataset = dataset
         self.batch_size = int(batch_size)
         self.num_replicas = int(num_replicas)
@@ -678,27 +678,27 @@ class FaMShardAwareBatchSampler(BatchSampler):
             else self.PARTITION_FORMAT)
         if state.get("partition_format") != expected_format:
             raise ValueError(
-                "cannot resume FaM sampler from a different partition format")
+                "cannot resume Zerith VA sampler from a different partition format")
         for key in ("seed", "batch_size", "num_replicas", "rank"):
             if int(state[key]) != int(getattr(self, key)):
-                raise ValueError(f"cannot resume FaM sampler with a different {key}")
+                raise ValueError(f"cannot resume Zerith VA sampler with a different {key}")
         if self.global_batch_mixing:
             if state.get("shuffle") is not self.shuffle:
-                raise ValueError("cannot resume mixed FaM sampler with a different shuffle")
+                raise ValueError("cannot resume mixed Zerith VA sampler with a different shuffle")
             if not 0 <= int(state["next_batch_idx"]) <= len(self):
-                raise ValueError("mixed FaM sampler cursor is outside the epoch")
+                raise ValueError("mixed Zerith VA sampler cursor is outside the epoch")
         if self.exact_once:
             anchors = self._exact_layout()[2]
             if int(state.get("source_anchors", -1)) != anchors:
                 raise ValueError(
-                    "cannot resume FaM sampler after the anchor set changed")
+                    "cannot resume Zerith VA sampler after the anchor set changed")
             if int(state.get("global_batch_size", -1)) != (
                     self.batch_size * self.num_replicas):
                 raise ValueError(
-                    "cannot resume FaM sampler after the global batch changed")
+                    "cannot resume Zerith VA sampler after the global batch changed")
             if int(state.get("steps_per_rank", -1)) != self._exact_steps():
                 raise ValueError(
-                    "cannot resume FaM sampler after rank partitioning changed")
+                    "cannot resume Zerith VA sampler after rank partitioning changed")
             order_epoch = int(state.get("shard_order_epoch", -1))
             target_epoch = int(state["epoch"])
             next_batch_idx = int(state["next_batch_idx"])
@@ -707,19 +707,19 @@ class FaMShardAwareBatchSampler(BatchSampler):
                 or (next_batch_idx == 0 and order_epoch + 1 == target_epoch)
             ):
                 raise ValueError(
-                    "cannot resume FaM sampler from an ambiguous shard-order epoch")
+                    "cannot resume Zerith VA sampler from an ambiguous shard-order epoch")
             if state.get("shard_order_sha256") != self._shard_order_sha256(
                     order_epoch):
                 raise ValueError(
-                    "cannot resume FaM sampler after the ordered shard/anchor "
+                    "cannot resume Zerith VA sampler after the ordered shard/anchor "
                     "schedule changed")
         else:
             if int(state.get("source_batches", -1)) != self._total_source_batches():
                 raise ValueError(
-                    "cannot resume FaM sampler after the source batch count changed")
+                    "cannot resume Zerith VA sampler after the source batch count changed")
             if int(state.get("batches_per_rank", -1)) != self._batches_per_rank():
                 raise ValueError(
-                    "cannot resume FaM sampler after rank partitioning changed")
+                    "cannot resume Zerith VA sampler after rank partitioning changed")
         self.epoch = int(state["epoch"])
         self._next_batch_idx = int(state["next_batch_idx"])
         self._exact_layout_cache = None

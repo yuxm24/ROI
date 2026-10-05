@@ -1,4 +1,4 @@
-# Zerith model-weight licensing policy
+# Zerith VA model-weight licensing policy
 
 This source repository contains **no model checkpoints or weights**. Its
 [Apache-2.0 license](LICENSE) covers Zerith-authored code and documentation as

@@ -750,6 +750,6 @@ __all__ = [
     "rotation_6d_to_matrix",
 ]
 
-# The descriptive v5.2 name and the historical import resolve to one exact
+# The descriptive name and the historical import resolve to one exact
 # implementation; there is no second codec path whose math can drift.
 Action20State20Codec = CanonicalStateTrajectoryCodec

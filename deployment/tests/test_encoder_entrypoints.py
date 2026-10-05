@@ -45,7 +45,7 @@ def test_incompatible_interface_fails_before_import_weights_gpu_or_output(
     else:
         manifest["config"] = copy.deepcopy(config)
     if entrypoint == "prepare":
-        manifest["format"] = "fam-wam-policy-v5.2-action20-linear-g4d-teacher"
+        manifest["format"] = "zerith-va-policy-action20-linear-g4d-teacher"
     manifest_path = tmp_path / "manifest.json"
     write_json(manifest_path, manifest)
     before = manifest_path.read_bytes()

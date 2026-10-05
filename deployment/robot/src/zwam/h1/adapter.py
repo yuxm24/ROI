@@ -22,7 +22,7 @@ def load_planner(config):
         or not parts[1].isidentifier()
     ):
         raise ValueError(
-            "planner_factory must use module:function syntax; see the Zerith-VA README, public SDK and IK"
+            "planner_factory must use module:function syntax; see the Zerith VA README, public SDK and IK"
         )
     module, function = parts
     planner = getattr(importlib.import_module(module), function)()
@@ -43,7 +43,7 @@ def validate_planner(planner):
     ):
         if not hasattr(planner, attribute):
             raise ValueError(
-                f"Planner is missing {attribute}; see the Zerith-VA README, public SDK and IK"
+                f"Planner is missing {attribute}; see the Zerith VA README, public SDK and IK"
             )
     if np.asarray(planner.lower).shape != (19,) or np.asarray(planner.upper).shape != (19,):
         raise ValueError("Planner limits must be control19")

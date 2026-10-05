@@ -19,7 +19,7 @@ class _RejectRedirects(HTTPRedirectHandler):
 
 
 class PolicyClient:
-    """Connect to a ZWAM service and validate its state/action contract.
+    """Connect to a Zerith VA service and validate its state/action contract.
 
     Construction fetches server metadata. Call ``reset(prompt)`` before
     inference and ``close()`` when finished. Authentication uses the optional
@@ -81,7 +81,7 @@ class PolicyClient:
 
         ``images`` is uint8 RGB [T, 3, H, W, 3], ordered head/left/right;
         T is 1 after reset and 4 on subsequent calls. ``state`` is float32
-        [23] and ``valid`` is bool [23]. See the Zerith-VA README for units.
+        [23] and ``valid`` is bool [23]. See the Zerith VA README for units.
         A failed request invalidates the session; reset before trying again.
         """
         if not self.active:

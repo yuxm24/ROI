@@ -1,4 +1,4 @@
-"""XPolicyLab bridge to the public Z-VLA service."""
+"""XPolicyLab bridge to the public Zerith VA service."""
 import os
 from XPolicyLab.model_template import ModelTemplate
 from zvla.posttrain.client import PolicyClient

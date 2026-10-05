@@ -1,4 +1,4 @@
-"""RoboDojo observation and action conversion for Z-VLA."""
+"""RoboDojo observation and action conversion for Zerith VA."""
 
 from __future__ import annotations
 
@@ -27,13 +27,13 @@ def _load_shared_action_adapter():
     repo_root = Path(os.environ.get("ZVLA_REPO_ROOT", default_root)).resolve()
     path = repo_root / "zvla" / "actions" / "robotwin.py"
     if not path.is_file():
-        raise FileNotFoundError(f"Z-VLA dual-arm action adapter not found: {path}")
+        raise FileNotFoundError(f"Zerith VA dual-arm action adapter not found: {path}")
     spec = importlib.util.spec_from_file_location(
         "_zvla_robodojo_shared_action_adapter",
         path,
     )
     if spec is None or spec.loader is None:
-        raise ImportError(f"cannot load Z-VLA action adapter: {path}")
+        raise ImportError(f"cannot load Zerith VA action adapter: {path}")
     module = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(module)
     return module
@@ -137,7 +137,7 @@ def source_action_to_robodojo(
     source_action: Any,
     observation: dict[str, Any],
 ) -> dict[str, np.ndarray]:
-    """Convert a Z-VLA 14-D delta into one official RoboDojo EE action."""
+    """Convert a Zerith VA 14-D delta into one official RoboDojo EE action."""
     action = _finite_vector(source_action, name="source_action", length=14)
     left_pose, right_pose, _ = extract_pose_state(observation)
     target = _SHARED.source_action_to_official_ee_action(

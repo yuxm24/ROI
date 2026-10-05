@@ -12,13 +12,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from .fam_collator import (  # noqa: F401
-    FaMAbsolutePoseGeometryRobotCollator,
-    FaMAbsolutePoseRobotCollator,
-    FaMStateTrajectoryGeometryRobotCollator,
-    FaMStateTrajectoryRobotCollator,
-    FaMGeometryRobotCollator,
-    FaMPairedCollator,
-    FaMRobotCollator,
-    FaMVideoCollator,
+from .zerith_va_collator import (  # noqa: F401
+    ZerithVAAbsolutePoseGeometryRobotCollator,
+    ZerithVAAbsolutePoseRobotCollator,
+    ZerithVAStateTrajectoryGeometryRobotCollator,
+    ZerithVAStateTrajectoryRobotCollator,
+    ZerithVAGeometryRobotCollator,
+    ZerithVAPairedCollator,
+    ZerithVARobotCollator,
+    ZerithVAVideoCollator,
 )

@@ -181,7 +181,7 @@ def evaluate(args):
             resources = _required_files(
                 package / "robotwin/public_policy",
                 _ROBOTWIN_POLICY_FILES,
-                "Installed Z-VLA RoboTwin plugin",
+                "Installed Zerith VA RoboTwin plugin",
             )
             target = root / "policy/zvla_public"
             cmd = [
@@ -208,7 +208,7 @@ def evaluate(args):
             resources = _required_files(
                 package / "robodojo/xpolicylab_policy/ZVLA",
                 _ROBODOJO_POLICY_FILES,
-                "Installed Z-VLA RoboDojo plugin",
+                "Installed Zerith VA RoboDojo plugin",
             )
             target = root / "XPolicyLab/policy/ZVLA"
             # Official XPolicyLab launch arguments are passed explicitly by the user.

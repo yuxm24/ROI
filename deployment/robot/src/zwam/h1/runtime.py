@@ -108,7 +108,7 @@ def execute(config, args):
 
     if config.get("commissioned") is not True:
         raise ValueError(
-            "Commission this robot/URDF/SDK and set commissioned=true; see the Zerith-VA README, H1 deployment"
+            "Commission this robot/URDF/SDK and set commissioned=true; see the Zerith VA README, H1 deployment"
         )
     if not sys.stdin.isatty():
         raise ValueError("Hardware execution requires an attached interactive terminal")
